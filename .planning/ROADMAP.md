@@ -31,12 +31,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Admin can perform full CRUD on users (list, get, create, update, delete)
   4. Authenticated user can perform full CRUD on Granjas with role-based filtering
   5. Swagger UI is accessible and documents all implemented endpoints
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md -- Project scaffold: Cargo.toml, config, errors, db, tracing, main.rs skeleton
+- [ ] 01-02-PLAN.md -- All 16 entity models, all DTOs, JWT Claims middleware extractor
+- [ ] 01-03-PLAN.md -- Auth service + Granjas service + handlers + CORS + Swagger UI wiring
 
 ### Phase 2: Complete Backend CRUD
 **Goal**: Every CRUD endpoint from the original .NET backend responds identically in the Rust backend
@@ -128,7 +128,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Rust Foundation | 0/3 | Not started | - |
+| 1. Rust Foundation | 0/3 | Planned | - |
 | 2. Complete Backend CRUD | 0/3 | Not started | - |
 | 3. Reports & Business Logic | 0/3 | Not started | - |
 | 4. Vue Scaffold + Auth | 0/3 | Not started | - |
