@@ -80,13 +80,13 @@ Plans:
   2. User can log in via LoginView and session persists across browser refreshes (localStorage)
   3. Unauthenticated users are redirected to login; authenticated users see the navigation drawer and app bar
   4. Dark mode toggle and font scale adjustment work correctly
-**Plans**: TBD
+**Plans:** 3 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
-- [ ] 04-03: TBD
+- [ ] 04-01-PLAN.md -- Project scaffold (Vue 3 + Vuetify + Vite + TS), Vuetify theme, API service, Pinia stores (auth + accessibility)
+- [ ] 04-02-PLAN.md -- Vue Router with guards, ResponsiveNavigation, PageContainer, LoadingSpinner, LoginView, App.vue wiring
+- [ ] 04-03-PLAN.md -- Human verification checkpoint (login flow, navigation, dark mode, font scale)
 
 ### Phase 5: Vue CRUD Views
 **Goal**: All 14 remaining views are functional with CRUD operations, charts, and data display matching the React frontend
