@@ -133,11 +133,11 @@
 
 ### Frontend Foundation (FRON)
 
-- [ ] **FRON-01**: Projeto Vue 3 + Vuetify 3 + TypeScript + Vite configurado e buildando
-- [ ] **FRON-02**: Vuetify tema migrado do MUI (cores, dark mode, fontScale)
-- [ ] **FRON-03**: Auth store (Pinia) com login/logout/register e persistencia em localStorage
-- [ ] **FRON-04**: Accessibility store (Pinia) com dark mode toggle e font scale
-- [ ] **FRON-05**: API service (Axios) com interceptors de token e redirect 401
+- [x] **FRON-01**: Projeto Vue 3 + Vuetify 3 + TypeScript + Vite configurado e buildando
+- [x] **FRON-02**: Vuetify tema migrado do MUI (cores, dark mode, fontScale)
+- [x] **FRON-03**: Auth store (Pinia) com login/logout/register e persistencia em localStorage
+- [x] **FRON-04**: Accessibility store (Pinia) com dark mode toggle e font scale
+- [x] **FRON-05**: API service (Axios) com interceptors de token e redirect 401
 - [ ] **FRON-06**: Vue Router com navigation guards (rotas protegidas)
 - [ ] **FRON-07**: ResponsiveNavigation.vue (drawer + app bar)
 - [ ] **FRON-08**: PageContainer.vue e LoadingSpinner.vue

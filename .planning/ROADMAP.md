@@ -80,11 +80,11 @@ Plans:
   2. User can log in via LoginView and session persists across browser refreshes (localStorage)
   3. Unauthenticated users are redirected to login; authenticated users see the navigation drawer and app bar
   4. Dark mode toggle and font scale adjustment work correctly
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 **UI hint**: yes
 
 Plans:
-- [ ] 04-01-PLAN.md -- Project scaffold (Vue 3 + Vuetify + Vite + TS), Vuetify theme, API service, Pinia stores (auth + accessibility)
+- [x] 04-01-PLAN.md -- Project scaffold (Vue 3 + Vuetify + Vite + TS), Vuetify theme, API service, Pinia stores (auth + accessibility)
 - [ ] 04-02-PLAN.md -- Vue Router with guards, ResponsiveNavigation, PageContainer, LoadingSpinner, LoginView, App.vue wiring
 - [ ] 04-03-PLAN.md -- Human verification checkpoint (login flow, navigation, dark mode, font scale)
 
@@ -131,6 +131,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 1. Rust Foundation | 0/3 | Planned | - |
 | 2. Complete Backend CRUD | 0/3 | Planned | - |
 | 3. Reports & Business Logic | 0/3 | Not started | - |
-| 4. Vue Scaffold + Auth | 0/3 | Not started | - |
+| 4. Vue Scaffold + Auth | 1/3 | In Progress|  |
 | 5. Vue CRUD Views | 0/4 | Not started | - |
 | 6. Docker & Finalization | 0/2 | Not started | - |
