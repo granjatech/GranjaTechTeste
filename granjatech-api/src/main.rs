@@ -65,6 +65,12 @@ use utoipa_swagger_ui::SwaggerUi;
         handlers::profile::get_profile,
         handlers::profile::update_profile,
         handlers::profile::change_password,
+        handlers::relatorios::get_financeiro_simplificado,
+        handlers::relatorios::get_financeiro,
+        handlers::relatorios::get_producao,
+        handlers::relatorios::get_avicultura,
+        handlers::relatorios::get_desempenho_lote,
+        handlers::relatorios::get_avancado,
     ),
     components(schemas(
         dto::auth::LoginDto,
@@ -103,6 +109,29 @@ use utoipa_swagger_ui::SwaggerUi;
         dto::profile::ProfileDetailDto,
         dto::profile::UpdateProfileDto,
         dto::profile::ChangePasswordDto,
+        dto::financeiro::RelatorioFinanceiroDto,
+        dto::financeiro::RelatorioFinanceiroSimplificadoDto,
+        dto::financeiro::FinanceReportDto,
+        dto::financeiro::FinanceReportItemDto,
+        dto::relatorios::RelatorioProducaoDto,
+        dto::relatorios::RelatorioAviculturaDto,
+        dto::relatorios::ResumoGeralAviculturaDto,
+        dto::relatorios::DetalheLoteAviculturaDto,
+        dto::relatorios::BenchmarksAviculturaDto,
+        dto::relatorios::RelatorioDesempenhoLoteDto,
+        dto::relatorios::PerformanceLoteDto,
+        dto::relatorios::CurvaCrescimentoItemDto,
+        dto::relatorios::ConsumoRacaoGroupDto,
+        dto::relatorios::ConsumoRacaoDiaDto,
+        dto::relatorios::ConsumoAguaItemDto,
+        dto::relatorios::HistoricoSanitarioItemDto,
+        dto::relatorios::AnaliseMortalidadeItemDto,
+        dto::relatorios::QualidadeAmbientalItemDto,
+        dto::relatorios::GeralReportDto,
+        dto::relatorios::ConsumoResumoDto,
+        dto::relatorios::PesagemResumoDto,
+        dto::relatorios::SanitarioResumoDto,
+        dto::relatorios::SensorResumoDto,
     )),
     tags(
         (name = "auth", description = "Autenticacao e gerenciamento de usuarios"),
@@ -117,7 +146,8 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "leituras", description = "Leituras de sensores (publico)"),
         (name = "estoque", description = "Produtos em estoque"),
         (name = "auditoria", description = "Logs de auditoria"),
-        (name = "profile", description = "Perfil do usuario")
+        (name = "profile", description = "Perfil do usuario"),
+        (name = "relatorios", description = "Relatorios e analytics")
     )
 )]
 struct ApiDoc;

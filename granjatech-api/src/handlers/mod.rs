@@ -12,6 +12,7 @@ pub mod lotes;
 pub mod pesagem;
 pub mod profile;
 pub mod sanitario;
+pub mod relatorios;
 pub mod sensores;
 
 pub fn configure_routes(cfg: &mut web::ServiceConfig) {
@@ -104,6 +105,15 @@ pub fn configure_routes(cfg: &mut web::ServiceConfig) {
                     .route("", web::get().to(profile::get_profile))
                     .route("", web::put().to(profile::update_profile))
                     .route("/change-password", web::post().to(profile::change_password)),
+            )
+            .service(
+                web::scope("/relatorios")
+                    .route("/financeiro-simplificado", web::get().to(relatorios::get_financeiro_simplificado))
+                    .route("/financeiro", web::get().to(relatorios::get_financeiro))
+                    .route("/producao", web::get().to(relatorios::get_producao))
+                    .route("/avicultura", web::get().to(relatorios::get_avicultura))
+                    .route("/desempenho-lote/{loteId}", web::get().to(relatorios::get_desempenho_lote))
+                    .route("/avancado", web::get().to(relatorios::get_avancado)),
             ),
     );
 }
