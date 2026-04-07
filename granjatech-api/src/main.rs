@@ -52,6 +52,19 @@ use utoipa_swagger_ui::SwaggerUi;
         handlers::sanitario::list_eventos,
         handlers::sanitario::resumo_sanitario,
         handlers::sanitario::cronograma_vacinacao,
+        handlers::sensores::get_sensores,
+        handlers::sensores::create_sensor,
+        handlers::sensores::delete_sensor,
+        handlers::sensores::get_leituras_sensor,
+        handlers::leituras::post_leitura,
+        handlers::estoque::get_produtos,
+        handlers::estoque::create_produto,
+        handlers::estoque::update_produto,
+        handlers::estoque::delete_produto,
+        handlers::auditoria::get_logs,
+        handlers::profile::get_profile,
+        handlers::profile::update_profile,
+        handlers::profile::change_password,
     ),
     components(schemas(
         dto::auth::LoginDto,
@@ -80,6 +93,16 @@ use utoipa_swagger_ui::SwaggerUi;
         dto::consumo::ConsumoAguaResponseDto,
         dto::pesagem::CreatePesagemSemanalDto,
         dto::pesagem::PesagemSemanalResponseDto,
+        dto::sensor::CreateSensorDto,
+        dto::sensor::SensorResponseDto,
+        dto::sensor::CreateLeituraDto,
+        dto::sensor::LeituraSensorResponseDto,
+        dto::estoque::CreateProdutoDto,
+        dto::estoque::UpdateProdutoDto,
+        dto::estoque::ProdutoResponseDto,
+        dto::profile::ProfileDetailDto,
+        dto::profile::UpdateProfileDto,
+        dto::profile::ChangePasswordDto,
     )),
     tags(
         (name = "auth", description = "Autenticacao e gerenciamento de usuarios"),
@@ -89,7 +112,12 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "financas", description = "Transacoes financeiras"),
         (name = "consumo", description = "Consumo de racao e agua"),
         (name = "pesagem", description = "Pesagem semanal"),
-        (name = "sanitario", description = "Eventos sanitarios e vacinacao")
+        (name = "sanitario", description = "Eventos sanitarios e vacinacao"),
+        (name = "sensores", description = "Sensores IoT"),
+        (name = "leituras", description = "Leituras de sensores (publico)"),
+        (name = "estoque", description = "Produtos em estoque"),
+        (name = "auditoria", description = "Logs de auditoria"),
+        (name = "profile", description = "Perfil do usuario")
     )
 )]
 struct ApiDoc;

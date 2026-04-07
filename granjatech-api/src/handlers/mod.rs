@@ -1,13 +1,18 @@
 use actix_web::web;
 
 pub mod auth;
+pub mod auditoria;
 pub mod consumo;
 pub mod dashboard;
+pub mod estoque;
 pub mod financas;
 pub mod granjas;
+pub mod leituras;
 pub mod lotes;
 pub mod pesagem;
+pub mod profile;
 pub mod sanitario;
+pub mod sensores;
 
 pub fn configure_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -71,6 +76,34 @@ pub fn configure_routes(cfg: &mut web::ServiceConfig) {
                     .route("/resumo/{loteId}", web::get().to(sanitario::resumo_sanitario))
                     .route("", web::post().to(sanitario::create_evento))
                     .route("/{loteId}", web::get().to(sanitario::list_eventos)),
+            )
+            .service(
+                web::scope("/sensores")
+                    .route("", web::get().to(sensores::get_sensores))
+                    .route("", web::post().to(sensores::create_sensor))
+                    .route("/{id}", web::delete().to(sensores::delete_sensor))
+                    .route("/{id}/leituras", web::get().to(sensores::get_leituras_sensor)),
+            )
+            .service(
+                web::scope("/leituras")
+                    .route("", web::post().to(leituras::post_leitura)),
+            )
+            .service(
+                web::scope("/estoque")
+                    .route("", web::get().to(estoque::get_produtos))
+                    .route("", web::post().to(estoque::create_produto))
+                    .route("/{id}", web::put().to(estoque::update_produto))
+                    .route("/{id}", web::delete().to(estoque::delete_produto)),
+            )
+            .service(
+                web::scope("/auditoria")
+                    .route("", web::get().to(auditoria::get_logs)),
+            )
+            .service(
+                web::scope("/profile")
+                    .route("", web::get().to(profile::get_profile))
+                    .route("", web::put().to(profile::update_profile))
+                    .route("/change-password", web::post().to(profile::change_password)),
             ),
     );
 }
