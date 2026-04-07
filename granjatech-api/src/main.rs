@@ -65,6 +65,15 @@ use utoipa_swagger_ui::SwaggerUi;
         handlers::profile::get_profile,
         handlers::profile::update_profile,
         handlers::profile::change_password,
+        handlers::avicultura::get_metricas,
+        handlers::avicultura::get_analise_consumo,
+        handlers::avicultura::get_curvas_crescimento,
+        handlers::avicultura::get_resumo_sanitario,
+        handlers::avicultura::get_alertas,
+        handlers::avicultura::get_comparacao_industria,
+        handlers::avicultura::get_projecao_abate,
+        handlers::avicultura::estimar_peso,
+        handlers::avicultura::get_dashboard,
     ),
     components(schemas(
         dto::auth::LoginDto,
@@ -103,6 +112,22 @@ use utoipa_swagger_ui::SwaggerUi;
         dto::profile::ProfileDetailDto,
         dto::profile::UpdateProfileDto,
         dto::profile::ChangePasswordDto,
+        dto::avicultura::MetricasLoteDto,
+        dto::avicultura::DashboardAviculturaDto,
+        dto::avicultura::EstimarPesoResponseDto,
+        dto::avicultura::AlertaParametroDto,
+        dto::avicultura::ComparacaoIndustriaDto,
+        dto::avicultura::MetricaComparacaoDto,
+        dto::avicultura::AnaliseConsumoDto,
+        dto::avicultura::ConsumoFaseDto,
+        dto::avicultura::CurvasCrescimentoDto,
+        dto::avicultura::PontoCurvaDto,
+        dto::avicultura::ProjecaoAbateDto,
+        dto::avicultura::ResumoSanitarioDto,
+        dto::avicultura::EventoSanitarioResumoDto,
+        dto::avicultura::VacinacaoScheduleDto,
+        dto::avicultura::ProximaAcaoSanitariaDto,
+        dto::avicultura::RegistroMortalidadePorFaseDto,
     )),
     tags(
         (name = "auth", description = "Autenticacao e gerenciamento de usuarios"),
@@ -117,7 +142,8 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "leituras", description = "Leituras de sensores (publico)"),
         (name = "estoque", description = "Produtos em estoque"),
         (name = "auditoria", description = "Logs de auditoria"),
-        (name = "profile", description = "Perfil do usuario")
+        (name = "profile", description = "Perfil do usuario"),
+        (name = "avicultura", description = "Avicultura analytics e metricas")
     )
 )]
 struct ApiDoc;

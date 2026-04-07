@@ -2,6 +2,7 @@ use actix_web::web;
 
 pub mod auth;
 pub mod auditoria;
+pub mod avicultura;
 pub mod consumo;
 pub mod dashboard;
 pub mod estoque;
@@ -104,6 +105,18 @@ pub fn configure_routes(cfg: &mut web::ServiceConfig) {
                     .route("", web::get().to(profile::get_profile))
                     .route("", web::put().to(profile::update_profile))
                     .route("/change-password", web::post().to(profile::change_password)),
+            )
+            .service(
+                web::scope("/avicultura")
+                    .route("/{loteId}/metricas", web::get().to(avicultura::get_metricas))
+                    .route("/{loteId}/analise-consumo", web::get().to(avicultura::get_analise_consumo))
+                    .route("/{loteId}/curvas-crescimento", web::get().to(avicultura::get_curvas_crescimento))
+                    .route("/{loteId}/resumo-sanitario", web::get().to(avicultura::get_resumo_sanitario))
+                    .route("/{loteId}/alertas", web::get().to(avicultura::get_alertas))
+                    .route("/{loteId}/comparacao-industria", web::get().to(avicultura::get_comparacao_industria))
+                    .route("/{loteId}/projecao-abate", web::get().to(avicultura::get_projecao_abate))
+                    .route("/{loteId}/estimar-peso", web::get().to(avicultura::estimar_peso))
+                    .route("/{loteId}/dashboard", web::get().to(avicultura::get_dashboard)),
             ),
     );
 }
