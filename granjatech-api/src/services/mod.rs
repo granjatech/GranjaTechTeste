@@ -7,3 +7,6 @@ pub mod financas_service;
 pub mod consumo_service;
 pub mod pesagem_service;
 pub mod sanitario_service;
+pub mod sensor_service;
+pub mod estoque_service;
+pub mod profile_service;

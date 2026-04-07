@@ -21,3 +21,13 @@ pub struct UpdateProfileDto {
     #[validate(email)]
     pub email: String,
 }
+
+/// DTO de troca de senha
+#[derive(Debug, Deserialize, Validate, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct ChangePasswordDto {
+    #[validate(length(min = 1))]
+    pub senha_atual: String,
+    #[validate(length(min = 6))]
+    pub nova_senha: String,
+}
