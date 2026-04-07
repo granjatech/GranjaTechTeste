@@ -48,12 +48,12 @@ Plans:
   3. User can manage financial transactions, consumption records, weighings, sanitary events, sensors, and stock products via their respective endpoints
   4. Profile endpoints allow viewing/editing profile and changing password
   5. Audit logs are recorded automatically for CRUD operations
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md -- Lotes CRUD (mortalidade, computed properties) + Dashboard (KPIs, monthly summary)
+- [ ] 02-02-PLAN.md -- Financas (5-min edit window) + Consumo + Pesagem + Sanitario
+- [ ] 02-03-PLAN.md -- Sensores (public leituras) + Estoque + Auditoria + Profile (password change)
 
 ### Phase 3: Reports & Business Logic
 **Goal**: All advanced analytics (avicultura module) and report endpoints produce results identical to the .NET backend
@@ -129,7 +129,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Rust Foundation | 0/3 | Planned | - |
-| 2. Complete Backend CRUD | 0/3 | Not started | - |
+| 2. Complete Backend CRUD | 0/3 | Planned | - |
 | 3. Reports & Business Logic | 0/3 | Not started | - |
 | 4. Vue Scaffold + Auth | 0/3 | Not started | - |
 | 5. Vue CRUD Views | 0/4 | Not started | - |
