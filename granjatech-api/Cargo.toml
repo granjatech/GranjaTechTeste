@@ -19,7 +19,7 @@ dotenvy = "0.15"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 tracing-actix-web = "0.7"
-utoipa = { version = "5", features = ["actix_extras", "chrono"] }
+utoipa = { version = "5", features = ["actix_extras", "chrono", "decimal"] }
 utoipa-swagger-ui = { version = "9", features = ["actix-web"] }
 uuid = { version = "1", features = ["v4", "serde"] }
 tokio = { version = "1", features = ["full"] }

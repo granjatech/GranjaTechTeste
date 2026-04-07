@@ -1,0 +1,13 @@
+pub mod auth;
+pub mod granja;
+pub mod lote;
+pub mod dashboard;
+pub mod financeiro;
+pub mod avicultura;
+pub mod consumo;
+pub mod pesagem;
+pub mod sanitario;
+pub mod sensor;
+pub mod estoque;
+pub mod relatorios;
+pub mod profile;

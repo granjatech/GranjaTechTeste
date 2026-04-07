@@ -1,6 +1,8 @@
 mod config;
 mod db;
+mod dto;
 mod errors;
+mod middleware;
 mod models;
 
 use actix_web::{web, App, HttpServer, HttpResponse};
