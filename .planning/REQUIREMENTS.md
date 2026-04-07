@@ -138,13 +138,13 @@
 - [x] **FRON-03**: Auth store (Pinia) com login/logout/register e persistencia em localStorage
 - [x] **FRON-04**: Accessibility store (Pinia) com dark mode toggle e font scale
 - [x] **FRON-05**: API service (Axios) com interceptors de token e redirect 401
-- [ ] **FRON-06**: Vue Router com navigation guards (rotas protegidas)
-- [ ] **FRON-07**: ResponsiveNavigation.vue (drawer + app bar)
-- [ ] **FRON-08**: PageContainer.vue e LoadingSpinner.vue
+- [x] **FRON-06**: Vue Router com navigation guards (rotas protegidas)
+- [x] **FRON-07**: ResponsiveNavigation.vue (drawer + app bar)
+- [x] **FRON-08**: PageContainer.vue e LoadingSpinner.vue
 
 ### Frontend Views (VIEW)
 
-- [ ] **VIEW-01**: LoginView.vue funcional contra backend Rust
+- [x] **VIEW-01**: LoginView.vue funcional contra backend Rust
 - [ ] **VIEW-02**: DashboardView.vue com KPIs e graficos (vue-chartjs)
 - [ ] **VIEW-03**: GranjasView.vue com CRUD e dialogs
 - [ ] **VIEW-04**: LotesView.vue com CRUD e campos extras
@@ -218,7 +218,7 @@
 | RELA-01..07 | Phase 3 | Pending |
 | CACH-01 | Phase 3 | Pending |
 | FRON-01..08 | Phase 4 | Pending |
-| VIEW-01 | Phase 4 | Pending |
+| VIEW-01 | Phase 4 | Complete |
 | VIEW-02..15 | Phase 5 | Pending |
 | DOCK-01..04 | Phase 6 | Pending |
 
