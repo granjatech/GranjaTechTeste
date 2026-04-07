@@ -27,6 +27,15 @@ use utoipa_swagger_ui::SwaggerUi;
         handlers::granjas::create_granja,
         handlers::granjas::update_granja,
         handlers::granjas::delete_granja,
+        handlers::lotes::get_lotes,
+        handlers::lotes::get_lote,
+        handlers::lotes::create_lote,
+        handlers::lotes::update_lote,
+        handlers::lotes::delete_lote,
+        handlers::lotes::registrar_mortalidade,
+        handlers::lotes::listar_mortalidades,
+        handlers::dashboard::get_kpis,
+        handlers::dashboard::get_resumo_mensal,
     ),
     components(schemas(
         dto::auth::LoginDto,
@@ -38,10 +47,19 @@ use utoipa_swagger_ui::SwaggerUi;
         dto::granja::CreateGranjaDto,
         dto::granja::UpdateGranjaDto,
         dto::granja::GranjaResponseDto,
+        dto::lote::CreateLoteDto,
+        dto::lote::UpdateLoteDto,
+        dto::lote::LoteResponseDto,
+        dto::sanitario::CreateRegistroMortalidadeDto,
+        dto::sanitario::RegistroMortalidadeDto,
+        dto::dashboard::DashboardKpiDto,
+        dto::dashboard::MonthlySummaryDto,
     )),
     tags(
         (name = "auth", description = "Autenticacao e gerenciamento de usuarios"),
-        (name = "granjas", description = "CRUD de granjas")
+        (name = "granjas", description = "CRUD de granjas"),
+        (name = "lotes", description = "CRUD de lotes de aves"),
+        (name = "dashboard", description = "KPIs e resumo mensal")
     )
 )]
 struct ApiDoc;
