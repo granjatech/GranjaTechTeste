@@ -34,9 +34,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Project scaffold: Cargo.toml, config, errors, db, tracing, main.rs skeleton
-- [ ] 01-02-PLAN.md -- All 16 entity models, all DTOs, JWT Claims middleware extractor
-- [ ] 01-03-PLAN.md -- Auth service + Granjas service + handlers + CORS + Swagger UI wiring
+- [x] 01-01-PLAN.md -- Project scaffold: Cargo.toml, config, errors, db, tracing, main.rs skeleton
+- [x] 01-02-PLAN.md -- All 16 entity models, all DTOs, JWT Claims middleware extractor
+- [x] 01-03-PLAN.md -- Auth service + Granjas service + handlers + CORS + Swagger UI wiring
 
 ### Phase 2: Complete Backend CRUD
 **Goal**: Every CRUD endpoint from the original .NET backend responds identically in the Rust backend
