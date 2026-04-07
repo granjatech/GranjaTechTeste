@@ -44,6 +44,7 @@ impl From<TransacaoJoinRow> for TransacaoSimplificadaDto {
 
 /// Helper row for fetching transaction with creator role
 #[derive(Debug, sqlx::FromRow)]
+#[allow(dead_code)]
 struct TransacaoComRole {
     #[sqlx(rename = "Id")]
     id: i32,

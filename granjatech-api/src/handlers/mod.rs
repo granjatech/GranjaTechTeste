@@ -1,9 +1,13 @@
 use actix_web::web;
 
 pub mod auth;
+pub mod consumo;
 pub mod dashboard;
+pub mod financas;
 pub mod granjas;
 pub mod lotes;
+pub mod pesagem;
+pub mod sanitario;
 
 pub fn configure_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -39,6 +43,34 @@ pub fn configure_routes(cfg: &mut web::ServiceConfig) {
                 web::scope("/dashboard")
                     .route("/kpis", web::get().to(dashboard::get_kpis))
                     .route("/resumo-mensal", web::get().to(dashboard::get_resumo_mensal)),
+            )
+            .service(
+                web::scope("/financas")
+                    .route("", web::get().to(financas::get_transacoes))
+                    .route("", web::post().to(financas::create_transacao))
+                    .route("/{id}", web::put().to(financas::update_transacao))
+                    .route("/{id}", web::delete().to(financas::delete_transacao)),
+            )
+            .service(
+                web::scope("/consumo")
+                    .route("/racao", web::post().to(consumo::create_consumo_racao))
+                    .route("/agua", web::post().to(consumo::create_consumo_agua))
+                    .route("/racao/{loteId}", web::get().to(consumo::list_consumo_racao))
+                    .route("/agua/{loteId}", web::get().to(consumo::list_consumo_agua))
+                    .route("/resumo/{loteId}", web::get().to(consumo::resumo_consumo)),
+            )
+            .service(
+                web::scope("/pesagem")
+                    .route("", web::post().to(pesagem::create_pesagem))
+                    .route("/resumo/{loteId}", web::get().to(pesagem::resumo_pesagens))
+                    .route("/{loteId}", web::get().to(pesagem::list_pesagens)),
+            )
+            .service(
+                web::scope("/sanitario")
+                    .route("/cronograma-vacinacao", web::get().to(sanitario::cronograma_vacinacao))
+                    .route("/resumo/{loteId}", web::get().to(sanitario::resumo_sanitario))
+                    .route("", web::post().to(sanitario::create_evento))
+                    .route("/{loteId}", web::get().to(sanitario::list_eventos)),
             ),
     );
 }
