@@ -67,9 +67,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md -- AviculturaService (9 endpoints: metricas, alertas, comparacao-industria, dashboard, stubs)
-- [ ] 03-02-PLAN.md -- RelatorioService + RelatorioAvancadoService (6 report endpoints with role filtering)
-- [ ] 03-03-PLAN.md -- CacheService (moka) + health check enhancement + cache wiring into handlers
+- [x] 03-01-PLAN.md -- AviculturaService (9 endpoints: metricas, alertas, comparacao-industria, dashboard, stubs)
+- [x] 03-02-PLAN.md -- RelatorioService + RelatorioAvancadoService (6 report endpoints with role filtering)
+- [x] 03-03-PLAN.md -- CacheService (moka) + health check enhancement + cache wiring into handlers
 
 ### Phase 4: Vue Scaffold + Auth
 **Goal**: Users can log in to the Vue frontend against the Rust backend, navigate protected routes, and toggle dark mode / font scale
