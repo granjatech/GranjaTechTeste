@@ -105,7 +105,7 @@ This document evolves at phase transitions and milestone boundaries.
 
 ## Current State
 
-Phase 02 (Complete Backend CRUD) complete — all 37 CRUD endpoints operational in Rust backend: Lotes (7 handlers + mortalidade clamping), Dashboard (KPIs + resumo mensal), Financas (5-min edit window, admin-only delete), Consumo (racao + agua with per-bird metrics), Pesagem (growth summaries), Sanitario (eventos + cronograma vacinacao), Sensores (CRUD + public leituras), Estoque, Auditoria (read-only), Profile (view/edit/change-password). All endpoints tested live against PostgreSQL. RegistrosMortalidade SQL column names corrected during testing.
+Phase 03 (Reports & Business Logic) complete — 9 avicultura analytics endpoints (metricas, alertas, comparacao-industria, dashboard + 5 stubs matching .NET behavior), 6 report endpoints (financeiro-simplificado, financeiro, producao, avicultura, desempenho-lote, avancado), moka cache layer (5-method CacheService with 5min/10min TTLs), enhanced /health endpoint. Role guards verified: Financeiro blocked from avicultura (403), all roles access reports. Date parsing fix applied during UAT (flexible YYYY-MM-DD + ISO 8601). All 5 UAT items passed.
 
 ---
-*Last updated: 2026-04-07 after Phase 02 completion*
+*Last updated: 2026-04-07 after Phase 03 completion*
