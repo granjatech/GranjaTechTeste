@@ -1,6 +1,6 @@
 use chrono::{DateTime, Utc};
 use rust_decimal::Decimal;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 /// Analise de consumo de racao e agua de um lote
@@ -202,4 +202,163 @@ pub struct ProximaAcaoSanitariaDto {
     pub data_prevista: DateTime<Utc>,
     pub prioridade: String,
     pub descricao: String,
+}
+
+/// Metricas principais do lote (composite response for GET /{loteId}/metricas)
+#[derive(Debug, Serialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct MetricasLoteDto {
+    pub iep: Decimal,
+    pub conversao_alimentar: Decimal,
+    pub ganho_medio_diario: Decimal,
+    pub viabilidade: Decimal,
+    pub uniformidade: Decimal,
+    pub densidade_atual: Decimal,
+}
+
+/// Dashboard completo de avicultura (composite response for GET /{loteId}/dashboard)
+#[derive(Debug, Serialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct DashboardAviculturaDto {
+    pub metricas: MetricasLoteDto,
+    pub alertas: Vec<AlertaParametroDto>,
+    pub comparacao_industria: ComparacaoIndustriaDto,
+    pub resumo_sanitario: ResumoSanitarioDto,
+    pub projecao_abate: ProjecaoAbateDto,
+}
+
+/// Resposta de estimativa de peso (composite response for GET /{loteId}/estimar-peso)
+#[derive(Debug, Serialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct EstimarPesoResponseDto {
+    pub peso_estimado_gramas: Decimal,
+    pub data_abate: DateTime<Utc>,
+}
+
+/// Query params for estimar-peso endpoint
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct EstimarPesoQuery {
+    pub data_abate: DateTime<Utc>,
+}
+
+// --- Default implementations for stub DTOs ---
+// DateTime<Utc> does not implement Default, so we implement manually.
+
+impl Default for AnaliseConsumoDto {
+    fn default() -> Self {
+        Self {
+            lote_id: 0,
+            lote_identificador: String::new(),
+            idade_atual_dias: 0,
+            consumo_total_racao_kg: Decimal::ZERO,
+            consumo_medio_racao_por_ave: Decimal::ZERO,
+            consumo_medio_racao_por_dia: Decimal::ZERO,
+            consumo_acumulado_racao: Decimal::ZERO,
+            consumo_total_agua_litros: Decimal::ZERO,
+            consumo_medio_agua_por_ave: Decimal::ZERO,
+            consumo_medio_agua_por_dia: Decimal::ZERO,
+            consumo_acumulado_agua: Decimal::ZERO,
+            relacao_agua_racao: Decimal::ZERO,
+            relacao_consumo_ideal: Decimal::ZERO,
+            consumos_por_fase: Vec::new(),
+            eficiencia_conversao: Decimal::ZERO,
+            status_consumo: String::new(),
+            consumo_previsto_total: Decimal::ZERO,
+            custo_estimado_racao: Decimal::ZERO,
+        }
+    }
+}
+
+impl Default for CurvasCrescimentoDto {
+    fn default() -> Self {
+        Self {
+            lote_id: 0,
+            lote_identificador: String::new(),
+            idade_atual_dias: 0,
+            curva_peso: Vec::new(),
+            curva_consumo_racao: Vec::new(),
+            curva_consumo_agua: Vec::new(),
+            curva_mortalidade: Vec::new(),
+            curva_ganho_medio_diario: Vec::new(),
+        }
+    }
+}
+
+impl Default for ResumoSanitarioDto {
+    fn default() -> Self {
+        Self {
+            lote_id: 0,
+            lote_identificador: String::new(),
+            total_eventos: 0,
+            total_vacinacoes: 0,
+            total_medicacoes: 0,
+            total_doencas: 0,
+            custo_total_sanitario: Decimal::ZERO,
+            custo_por_ave: Decimal::ZERO,
+            eventos_por_tipo: Vec::new(),
+            cronograma_vacinacao: Vec::new(),
+            alertas_sanitarios: Vec::new(),
+            proximas_acoes: Vec::new(),
+        }
+    }
+}
+
+impl Default for ProjecaoAbateDto {
+    fn default() -> Self {
+        Self {
+            lote_id: 0,
+            lote_identificador: String::new(),
+            data_abate_prevista: Utc::now(),
+            idade_abate_dias: 0,
+            peso_medio_atual_gramas: Decimal::ZERO,
+            peso_medio_projetado_gramas: Decimal::ZERO,
+            peso_total_projetado_kg: Decimal::ZERO,
+            quantidade_aves_projetada: 0,
+            quantidade_aves_atual: 0,
+            mortalidade_projetada_percentual: Decimal::ZERO,
+            rendimento_carcaca_estimado: Decimal::ZERO,
+            peso_carcaca_projetado_kg: Decimal::ZERO,
+            conversao_alimentar_projetada: Decimal::ZERO,
+            iep_projetado: Decimal::ZERO,
+            viabilidade_projetada: Decimal::ZERO,
+            valor_estimado_por_kg: Decimal::ZERO,
+            receita_bruta_estimada: Decimal::ZERO,
+            custo_producao_estimado: Decimal::ZERO,
+            lucro_estimado: Decimal::ZERO,
+            status_projecao: String::new(),
+            observacoes: Vec::new(),
+        }
+    }
+}
+
+impl Default for ComparacaoIndustriaDto {
+    fn default() -> Self {
+        Self {
+            lote_id: 0,
+            lote_identificador: String::new(),
+            idade_dias: 0,
+            conversao_alimentar: MetricaComparacaoDto::default(),
+            ganho_medio_diario: MetricaComparacaoDto::default(),
+            viabilidade: MetricaComparacaoDto::default(),
+            iep: MetricaComparacaoDto::default(),
+            peso_medio: MetricaComparacaoDto::default(),
+            classificacao_geral: String::new(),
+            pontuacao_geral: Decimal::ZERO,
+        }
+    }
+}
+
+impl Default for MetricaComparacaoDto {
+    fn default() -> Self {
+        Self {
+            nome: String::new(),
+            valor_atual: Decimal::ZERO,
+            valor_padrao_industria: Decimal::ZERO,
+            valor_padrao_excelencia: Decimal::ZERO,
+            percentual_diferenca: Decimal::ZERO,
+            status: String::new(),
+            unidade: String::new(),
+        }
+    }
 }
