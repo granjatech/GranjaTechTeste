@@ -1,0 +1,25 @@
+[package]
+name = "granjatech-api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = "4"
+actix-cors = "0.7"
+actix-rt = "2"
+sqlx = { version = "0.8", features = ["runtime-tokio", "postgres", "chrono", "bigdecimal"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+jsonwebtoken = { version = "10", features = ["rust_crypto"] }
+bcrypt = "0.17"
+validator = { version = "0.20", features = ["derive"] }
+chrono = { version = "0.4", features = ["serde"] }
+rust_decimal = { version = "1", features = ["serde-with-str"] }
+dotenvy = "0.15"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-actix-web = "0.7"
+utoipa = { version = "5", features = ["actix_extras", "chrono"] }
+utoipa-swagger-ui = { version = "9", features = ["actix-web"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+tokio = { version = "1", features = ["full"] }
