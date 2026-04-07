@@ -105,7 +105,7 @@ This document evolves at phase transitions and milestone boundaries.
 
 ## Current State
 
-Phase 03 (Reports & Business Logic) complete — 9 avicultura analytics endpoints (metricas, alertas, comparacao-industria, dashboard + 5 stubs matching .NET behavior), 6 report endpoints (financeiro-simplificado, financeiro, producao, avicultura, desempenho-lote, avancado), moka cache layer (5-method CacheService with 5min/10min TTLs), enhanced /health endpoint. Role guards verified: Financeiro blocked from avicultura (403), all roles access reports. Date parsing fix applied during UAT (flexible YYYY-MM-DD + ISO 8601). All 5 UAT items passed.
+Phase 04 (Vue Scaffold + Auth) complete — Vue 3 + Vuetify 3 + TypeScript + Vite project scaffolded in `granjatech-frontend/`. Vuetify theme with exact React color palette (#2E7D32 primary, #FF6F00 secondary, dark/light mode). Auth Pinia store (login/logout/hydrate with jwt-decode). Accessibility Pinia store (dark mode toggle, font scale 0.85-1.3, same localStorage keys as React). Axios API service with Bearer token and 401 redirect interceptors. Vue Router with 16 routes and beforeEach auth guard. ResponsiveNavigation with 13 role-filtered items, permanent/temporary drawer. PageContainer with breadcrumbs. LoginView with gradient background. All automated checks passed. Human UAT pending (login flow, dark mode, font scale, navigation, session persistence).
 
 ---
-*Last updated: 2026-04-07 after Phase 03 completion*
+*Last updated: 2026-04-07 after Phase 04 completion*
