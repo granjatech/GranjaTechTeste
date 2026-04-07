@@ -10,3 +10,5 @@ pub mod sanitario_service;
 pub mod sensor_service;
 pub mod estoque_service;
 pub mod profile_service;
+pub mod relatorio_service;
+pub mod relatorio_avancado_service;
