@@ -1,13 +1,25 @@
 <script setup lang="ts">
-// Root application component
+import { watch } from 'vue'
+import { useTheme } from 'vuetify'
+import { useAccessibilityStore } from '@/stores/accessibility'
+import { useAuthStore } from '@/stores/auth'
+import ResponsiveNavigation from '@/components/ResponsiveNavigation.vue'
+
+const theme = useTheme()
+const accessibility = useAccessibilityStore()
+const auth = useAuthStore()
+
+// Sync Vuetify theme with accessibility store
+watch(() => accessibility.mode, (newMode) => {
+  theme.global.name.value = newMode
+}, { immediate: true })
 </script>
 
 <template>
   <v-app>
+    <ResponsiveNavigation v-if="auth.isAuthenticated" />
     <v-main>
-      <v-container>
-        <p>GranjaTech Vue 3 + Vuetify</p>
-      </v-container>
+      <router-view />
     </v-main>
   </v-app>
 </template>
