@@ -374,7 +374,7 @@ impl LoteService {
         Self::verificar_acesso_granja(pool, lote.granja_id, user_id, user_role).await?;
 
         // Clamp quantity para nao ficar negativo
-        let qtd = dto.quantidade.min(lote.quantidade_aves_atual);
+        let qtd = dto.quantidade_mortas.min(lote.quantidade_aves_atual);
 
         // Baixa no lote
         sqlx::query(
@@ -388,30 +388,38 @@ impl LoteService {
         .execute(pool)
         .await?;
 
+        // Computar idade em dias
+        let idade_dias =
+            (dto.data.date_naive() - lote.data_entrada.date_naive()).num_days() as i32;
+        let aves_vivas = lote.quantidade_aves_atual - qtd;
+
         // Inserir registro de mortalidade
         let agora = Utc::now();
         let mortalidade = sqlx::query_as::<_, RegistroMortalidade>(
-            r#"INSERT INTO "RegistrosMortalidade" ("LoteId", "Data", "Quantidade", "Motivo",
-                                                    "Setor", "Observacoes", "ResponsavelRegistro",
+            r#"INSERT INTO "RegistrosMortalidade" ("LoteId", "Data", "QuantidadeMortas", "AvesVivas",
+                                                    "CausaPrincipal", "IdadeDias", "PesoMedioMortas",
+                                                    "Observacoes", "AcaoTomada", "ResponsavelRegistro",
                                                     "DataCriacao")
-               VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-               RETURNING "Id", "LoteId", "Data", "Quantidade", "Motivo",
-                         "Setor", "Observacoes", "ResponsavelRegistro", "DataCriacao""#,
+               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+               RETURNING "Id", "LoteId", "Data", "QuantidadeMortas", "AvesVivas",
+                         "CausaPrincipal", "IdadeDias", "PesoMedioMortas",
+                         "Observacoes", "AcaoTomada", "ResponsavelRegistro", "DataCriacao""#,
         )
         .bind(lote_id)
         .bind(dto.data)
         .bind(qtd)
-        .bind(&dto.motivo)
-        .bind(&dto.setor)
+        .bind(aves_vivas)
+        .bind(&dto.causa_principal)
+        .bind(idade_dias)
+        .bind(dto.peso_medio_mortas)
         .bind(&dto.observacoes)
+        .bind(&dto.acao_tomada)
         .bind(user_email)
         .bind(agora)
         .fetch_one(pool)
         .await?;
 
-        // Computar propriedades de resposta
-        let idade_dias =
-            (mortalidade.data.date_naive() - lote.data_entrada.date_naive()).num_days() as i32;
+        // Computar percentual de mortalidade do dia
         let percentual_mortalidade_dia = if lote.quantidade_aves_inicial > 0 {
             Decimal::from(qtd) / Decimal::from(lote.quantidade_aves_inicial) * Decimal::from(100)
         } else {
@@ -437,13 +445,15 @@ impl LoteService {
             id: mortalidade.id,
             lote_id: mortalidade.lote_id,
             data: mortalidade.data,
-            quantidade: mortalidade.quantidade,
-            motivo: mortalidade.motivo,
-            setor: mortalidade.setor,
+            quantidade_mortas: mortalidade.quantidade_mortas,
+            aves_vivas: mortalidade.aves_vivas,
+            causa_principal: mortalidade.causa_principal,
+            idade_dias: mortalidade.idade_dias,
+            peso_medio_mortas: mortalidade.peso_medio_mortas,
             observacoes: mortalidade.observacoes,
+            acao_tomada: mortalidade.acao_tomada,
             responsavel_registro: mortalidade.responsavel_registro,
             percentual_mortalidade_dia,
-            idade_dias,
         })
     }
 
@@ -473,8 +483,9 @@ impl LoteService {
         Self::verificar_acesso_granja(pool, lote.granja_id, user_id, user_role).await?;
 
         let registros = sqlx::query_as::<_, RegistroMortalidade>(
-            r#"SELECT "Id", "LoteId", "Data", "Quantidade", "Motivo",
-                      "Setor", "Observacoes", "ResponsavelRegistro", "DataCriacao"
+            r#"SELECT "Id", "LoteId", "Data", "QuantidadeMortas", "AvesVivas",
+                      "CausaPrincipal", "IdadeDias", "PesoMedioMortas",
+                      "Observacoes", "AcaoTomada", "ResponsavelRegistro", "DataCriacao"
                FROM "RegistrosMortalidade"
                WHERE "LoteId" = $1
                ORDER BY "Data" DESC"#,
@@ -486,10 +497,8 @@ impl LoteService {
         let resultado: Vec<RegistroMortalidadeDto> = registros
             .iter()
             .map(|r| {
-                let idade_dias =
-                    (r.data.date_naive() - lote.data_entrada.date_naive()).num_days() as i32;
                 let percentual_mortalidade_dia = if lote.quantidade_aves_inicial > 0 {
-                    Decimal::from(r.quantidade)
+                    Decimal::from(r.quantidade_mortas)
                         / Decimal::from(lote.quantidade_aves_inicial)
                         * Decimal::from(100)
                 } else {
@@ -500,13 +509,15 @@ impl LoteService {
                     id: r.id,
                     lote_id: r.lote_id,
                     data: r.data,
-                    quantidade: r.quantidade,
-                    motivo: r.motivo.clone(),
-                    setor: r.setor.clone(),
+                    quantidade_mortas: r.quantidade_mortas,
+                    aves_vivas: r.aves_vivas,
+                    causa_principal: r.causa_principal.clone(),
+                    idade_dias: r.idade_dias,
+                    peso_medio_mortas: r.peso_medio_mortas,
                     observacoes: r.observacoes.clone(),
+                    acao_tomada: r.acao_tomada.clone(),
                     responsavel_registro: r.responsavel_registro.clone(),
                     percentual_mortalidade_dia,
-                    idade_dias,
                 }
             })
             .collect();

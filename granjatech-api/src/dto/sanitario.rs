@@ -42,10 +42,11 @@ pub struct CreateRegistroMortalidadeDto {
     pub lote_id: Option<i32>,
     pub data: DateTime<Utc>,
     #[validate(range(min = 1))]
-    pub quantidade: i32,
-    pub motivo: Option<String>,
-    pub setor: Option<String>,
+    pub quantidade_mortas: i32,
+    pub causa_principal: Option<String>,
+    pub peso_medio_mortas: Option<Decimal>,
     pub observacoes: Option<String>,
+    pub acao_tomada: Option<String>,
 }
 
 /// DTO de resposta de registro de mortalidade
@@ -55,11 +56,13 @@ pub struct RegistroMortalidadeDto {
     pub id: i32,
     pub lote_id: i32,
     pub data: DateTime<Utc>,
-    pub quantidade: i32,
-    pub motivo: Option<String>,
-    pub setor: Option<String>,
+    pub quantidade_mortas: i32,
+    pub aves_vivas: i32,
+    pub causa_principal: Option<String>,
+    pub idade_dias: i32,
+    pub peso_medio_mortas: Option<Decimal>,
     pub observacoes: Option<String>,
+    pub acao_tomada: Option<String>,
     pub responsavel_registro: Option<String>,
     pub percentual_mortalidade_dia: Decimal,
-    pub idade_dias: i32,
 }
