@@ -13,6 +13,7 @@ pub mod lotes;
 pub mod pesagem;
 pub mod profile;
 pub mod sanitario;
+pub mod relatorios;
 pub mod sensores;
 
 pub fn configure_routes(cfg: &mut web::ServiceConfig) {
@@ -117,6 +118,15 @@ pub fn configure_routes(cfg: &mut web::ServiceConfig) {
                     .route("/{loteId}/projecao-abate", web::get().to(avicultura::get_projecao_abate))
                     .route("/{loteId}/estimar-peso", web::get().to(avicultura::estimar_peso))
                     .route("/{loteId}/dashboard", web::get().to(avicultura::get_dashboard)),
+            )
+            .service(
+                web::scope("/relatorios")
+                    .route("/financeiro-simplificado", web::get().to(relatorios::get_financeiro_simplificado))
+                    .route("/financeiro", web::get().to(relatorios::get_financeiro))
+                    .route("/producao", web::get().to(relatorios::get_producao))
+                    .route("/avicultura", web::get().to(relatorios::get_avicultura))
+                    .route("/desempenho-lote/{loteId}", web::get().to(relatorios::get_desempenho_lote))
+                    .route("/avancado", web::get().to(relatorios::get_avancado)),
             ),
     );
 }
