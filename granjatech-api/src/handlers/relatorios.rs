@@ -1,5 +1,5 @@
 use actix_web::{web, HttpResponse};
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, NaiveDate, NaiveDateTime, Utc};
 use serde::Deserialize;
 use sqlx::PgPool;
 
@@ -11,21 +11,41 @@ use crate::services::cache_service::CacheService;
 use crate::services::relatorio_avancado_service::RelatorioAvancadoService;
 use crate::services::relatorio_service::RelatorioService;
 
+// === Flexible date parsing (matches .NET DateTime flexible binding) ===
+
+fn parse_flexible_datetime(s: &str) -> Result<DateTime<Utc>, AppError> {
+    // Try ISO 8601 full datetime first
+    if let Ok(dt) = s.parse::<DateTime<Utc>>() {
+        return Ok(dt);
+    }
+    // Try NaiveDateTime (no timezone)
+    if let Ok(ndt) = NaiveDateTime::parse_from_str(s, "%Y-%m-%dT%H:%M:%S") {
+        return Ok(ndt.and_utc());
+    }
+    // Try date-only (YYYY-MM-DD) — .NET accepts this
+    if let Ok(nd) = NaiveDate::parse_from_str(s, "%Y-%m-%d") {
+        return Ok(nd.and_hms_opt(0, 0, 0).unwrap().and_utc());
+    }
+    Err(AppError::BadRequest(format!(
+        "Data invalida: '{}'. Use formato: 2025-01-01 ou 2025-01-01T00:00:00Z", s
+    )))
+}
+
 // === Query parameter structs ===
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DateRangeQuery {
-    pub data_inicio: DateTime<Utc>,
-    pub data_fim: DateTime<Utc>,
+    pub data_inicio: String,
+    pub data_fim: String,
     pub granja_id: Option<i32>,
 }
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AviculturaReportQuery {
-    pub data_inicio: Option<DateTime<Utc>>,
-    pub data_fim: Option<DateTime<Utc>>,
+    pub data_inicio: Option<String>,
+    pub data_fim: Option<String>,
     pub lote_id: Option<i32>,
 }
 
@@ -33,8 +53,8 @@ pub struct AviculturaReportQuery {
 #[serde(rename_all = "camelCase")]
 pub struct AvancadoQuery {
     pub granja_id: i32,
-    pub inicio: DateTime<Utc>,
-    pub fim: DateTime<Utc>,
+    pub inicio: String,
+    pub fim: String,
     pub tipo: Option<String>,
     pub setor: Option<String>,
 }
@@ -63,8 +83,8 @@ fn validate_date_range(inicio: &DateTime<Utc>, fim: &DateTime<Utc>) -> Result<()
     get,
     path = "/api/relatorios/financeiro-simplificado",
     params(
-        ("dataInicio" = DateTime<Utc>, Query, description = "Data inicio"),
-        ("dataFim" = DateTime<Utc>, Query, description = "Data fim"),
+        ("dataInicio" = String, Query, description = "Data inicio (YYYY-MM-DD)"),
+        ("dataFim" = String, Query, description = "Data fim (YYYY-MM-DD)"),
         ("granjaId" = Option<i32>, Query, description = "Filtro por granja")
     ),
     responses(
@@ -81,14 +101,16 @@ pub async fn get_financeiro_simplificado(
     query: web::Query<DateRangeQuery>,
     cache: web::Data<CacheService>,
 ) -> Result<HttpResponse, AppError> {
-    validate_date_range(&query.data_inicio, &query.data_fim)?;
+    let inicio = parse_flexible_datetime(&query.data_inicio)?;
+    let fim = parse_flexible_datetime(&query.data_fim)?;
+    validate_date_range(&inicio, &fim)?;
     let user_id = claims.user_id()?;
     let cache_key = format!(
         "report_fin_simp_{}_{}_{}_{}",
         user_id,
         claims.role,
-        query.data_inicio.format("%Y%m%d"),
-        query.data_fim.format("%Y%m%d")
+        inicio.format("%Y%m%d"),
+        fim.format("%Y%m%d")
     );
     let ttl = std::time::Duration::from_secs(10 * 60); // 10 min per D-05
 
@@ -99,8 +121,6 @@ pub async fn get_financeiro_simplificado(
                 let pool = pool.clone();
                 let role = claims.role.clone();
                 let granja_id = query.granja_id;
-                let inicio = query.data_inicio;
-                let fim = query.data_fim;
                 async move {
                     RelatorioService::financeiro_simplificado(
                         &pool, user_id, &role, inicio, fim, granja_id,
@@ -120,8 +140,8 @@ pub async fn get_financeiro_simplificado(
     get,
     path = "/api/relatorios/financeiro",
     params(
-        ("dataInicio" = DateTime<Utc>, Query, description = "Data inicio"),
-        ("dataFim" = DateTime<Utc>, Query, description = "Data fim"),
+        ("dataInicio" = String, Query, description = "Data inicio (YYYY-MM-DD)"),
+        ("dataFim" = String, Query, description = "Data fim (YYYY-MM-DD)"),
         ("granjaId" = Option<i32>, Query, description = "Filtro por granja")
     ),
     responses(
@@ -138,14 +158,16 @@ pub async fn get_financeiro(
     query: web::Query<DateRangeQuery>,
     cache: web::Data<CacheService>,
 ) -> Result<HttpResponse, AppError> {
-    validate_date_range(&query.data_inicio, &query.data_fim)?;
+    let inicio = parse_flexible_datetime(&query.data_inicio)?;
+    let fim = parse_flexible_datetime(&query.data_fim)?;
+    validate_date_range(&inicio, &fim)?;
     let user_id = claims.user_id()?;
     let cache_key = format!(
         "report_fin_{}_{}_{}_{}",
         user_id,
         claims.role,
-        query.data_inicio.format("%Y%m%d"),
-        query.data_fim.format("%Y%m%d")
+        inicio.format("%Y%m%d"),
+        fim.format("%Y%m%d")
     );
     let ttl = std::time::Duration::from_secs(10 * 60); // 10 min per D-05
 
@@ -156,8 +178,6 @@ pub async fn get_financeiro(
                 let pool = pool.clone();
                 let role = claims.role.clone();
                 let granja_id = query.granja_id;
-                let inicio = query.data_inicio;
-                let fim = query.data_fim;
                 async move {
                     RelatorioService::financeiro(&pool, user_id, &role, inicio, fim, granja_id)
                         .await
@@ -175,8 +195,8 @@ pub async fn get_financeiro(
     get,
     path = "/api/relatorios/producao",
     params(
-        ("dataInicio" = DateTime<Utc>, Query, description = "Data inicio"),
-        ("dataFim" = DateTime<Utc>, Query, description = "Data fim"),
+        ("dataInicio" = String, Query, description = "Data inicio (YYYY-MM-DD)"),
+        ("dataFim" = String, Query, description = "Data fim (YYYY-MM-DD)"),
         ("granjaId" = Option<i32>, Query, description = "Filtro por granja")
     ),
     responses(
@@ -193,14 +213,16 @@ pub async fn get_producao(
     query: web::Query<DateRangeQuery>,
     cache: web::Data<CacheService>,
 ) -> Result<HttpResponse, AppError> {
-    validate_date_range(&query.data_inicio, &query.data_fim)?;
+    let inicio = parse_flexible_datetime(&query.data_inicio)?;
+    let fim = parse_flexible_datetime(&query.data_fim)?;
+    validate_date_range(&inicio, &fim)?;
     let user_id = claims.user_id()?;
     let cache_key = format!(
         "report_prod_{}_{}_{}_{}",
         user_id,
         claims.role,
-        query.data_inicio.format("%Y%m%d"),
-        query.data_fim.format("%Y%m%d")
+        inicio.format("%Y%m%d"),
+        fim.format("%Y%m%d")
     );
     let ttl = std::time::Duration::from_secs(10 * 60); // 10 min per D-05
 
@@ -211,8 +233,6 @@ pub async fn get_producao(
                 let pool = pool.clone();
                 let role = claims.role.clone();
                 let granja_id = query.granja_id;
-                let inicio = query.data_inicio;
-                let fim = query.data_fim;
                 async move {
                     RelatorioService::producao(&pool, user_id, &role, inicio, fim, granja_id).await
                 }
@@ -229,8 +249,8 @@ pub async fn get_producao(
     get,
     path = "/api/relatorios/avicultura",
     params(
-        ("dataInicio" = Option<DateTime<Utc>>, Query, description = "Data inicio (default: now - 1 month)"),
-        ("dataFim" = Option<DateTime<Utc>>, Query, description = "Data fim (default: now)"),
+        ("dataInicio" = Option<String>, Query, description = "Data inicio (default: now - 1 month)"),
+        ("dataFim" = Option<String>, Query, description = "Data fim (default: now)"),
         ("loteId" = Option<i32>, Query, description = "Filtro por lote")
     ),
     responses(
@@ -247,14 +267,16 @@ pub async fn get_avicultura(
     query: web::Query<AviculturaReportQuery>,
     cache: web::Data<CacheService>,
 ) -> Result<HttpResponse, AppError> {
+    let inicio = query.data_inicio.as_deref().map(parse_flexible_datetime).transpose()?;
+    let fim = query.data_fim.as_deref().map(parse_flexible_datetime).transpose()?;
     // Validate date range only if both provided
-    if let (Some(ref inicio), Some(ref fim)) = (query.data_inicio, query.data_fim) {
-        validate_date_range(inicio, fim)?;
+    if let (Some(ref i), Some(ref f)) = (inicio, fim) {
+        validate_date_range(i, f)?;
     }
     let cache_key = format!(
         "report_avic_{:?}_{:?}_{:?}",
-        query.data_inicio.map(|d| d.format("%Y%m%d").to_string()),
-        query.data_fim.map(|d| d.format("%Y%m%d").to_string()),
+        inicio.map(|d| d.format("%Y%m%d").to_string()),
+        fim.map(|d| d.format("%Y%m%d").to_string()),
         query.lote_id
     );
     let ttl = std::time::Duration::from_secs(10 * 60); // 10 min per D-05
@@ -264,8 +286,6 @@ pub async fn get_avicultura(
             &cache_key,
             || {
                 let pool = pool.clone();
-                let inicio = query.data_inicio;
-                let fim = query.data_fim;
                 let lote_id = query.lote_id;
                 async move { RelatorioService::avicultura(&pool, inicio, fim, lote_id).await }
             },
@@ -321,8 +341,8 @@ pub async fn get_desempenho_lote(
     path = "/api/relatorios/avancado",
     params(
         ("granjaId" = i32, Query, description = "ID da granja"),
-        ("inicio" = DateTime<Utc>, Query, description = "Data inicio"),
-        ("fim" = DateTime<Utc>, Query, description = "Data fim"),
+        ("inicio" = String, Query, description = "Data inicio (YYYY-MM-DD)"),
+        ("fim" = String, Query, description = "Data fim (YYYY-MM-DD)"),
         ("tipo" = Option<String>, Query, description = "Tipo: financeiro, geral, setor"),
         ("setor" = Option<String>, Query, description = "Setor: consumo, pesagem, sanitario, sensores")
     ),
@@ -340,7 +360,9 @@ pub async fn get_avancado(
     _claims: Claims,
     query: web::Query<AvancadoQuery>,
 ) -> Result<HttpResponse, AppError> {
-    if query.fim <= query.inicio {
+    let inicio = parse_flexible_datetime(&query.inicio)?;
+    let fim = parse_flexible_datetime(&query.fim)?;
+    if fim <= inicio {
         return Err(AppError::BadRequest(
             "Periodo invalido: data de fim deve ser posterior a data de inicio.".into(),
         ));
@@ -365,8 +387,8 @@ pub async fn get_avancado(
             let result = RelatorioAvancadoService::financeiro(
                 &pool,
                 query.granja_id,
-                query.inicio,
-                query.fim,
+                inicio,
+                fim,
             )
             .await?;
             Ok(HttpResponse::Ok().json(result))
@@ -375,8 +397,8 @@ pub async fn get_avancado(
             let result = RelatorioAvancadoService::geral(
                 &pool,
                 query.granja_id,
-                query.inicio,
-                query.fim,
+                inicio,
+                fim,
             )
             .await?;
             Ok(HttpResponse::Ok().json(result))
@@ -393,8 +415,8 @@ pub async fn get_avancado(
                     let result = RelatorioAvancadoService::consumo(
                         &pool,
                         query.granja_id,
-                        query.inicio,
-                        query.fim,
+                        inicio,
+                        fim,
                     )
                     .await?;
                     Ok(HttpResponse::Ok().json(result))
@@ -403,8 +425,8 @@ pub async fn get_avancado(
                     let result = RelatorioAvancadoService::pesagem(
                         &pool,
                         query.granja_id,
-                        query.inicio,
-                        query.fim,
+                        inicio,
+                        fim,
                     )
                     .await?;
                     Ok(HttpResponse::Ok().json(result))
@@ -413,8 +435,8 @@ pub async fn get_avancado(
                     let result = RelatorioAvancadoService::sanitario(
                         &pool,
                         query.granja_id,
-                        query.inicio,
-                        query.fim,
+                        inicio,
+                        fim,
                     )
                     .await?;
                     Ok(HttpResponse::Ok().json(result))
@@ -423,8 +445,8 @@ pub async fn get_avancado(
                     let result = RelatorioAvancadoService::sensores(
                         &pool,
                         query.granja_id,
-                        query.inicio,
-                        query.fim,
+                        inicio,
+                        fim,
                     )
                     .await?;
                     Ok(HttpResponse::Ok().json(result))
