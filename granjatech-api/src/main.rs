@@ -1,6 +1,7 @@
 mod config;
 mod db;
 mod errors;
+mod models;
 
 use actix_web::{web, App, HttpServer, HttpResponse};
 use tracing_actix_web::TracingLogger;
