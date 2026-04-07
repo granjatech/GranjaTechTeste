@@ -103,5 +103,9 @@ This document evolves at phase transitions and milestone boundaries.
 3. Audit Out of Scope — reasons still valid?
 4. Update Context with current state
 
+## Current State
+
+Phase 01 (Rust Foundation) complete — compilable Rust project with Actix-web 4, SQLx models (16 entities), JWT auth, auth/granja CRUD services and handlers, CORS, Swagger UI. Human verification pending for DB connection, BCrypt compatibility, Swagger UI render, and role-based filtering.
+
 ---
-*Last updated: 2026-04-06 after initialization*
+*Last updated: 2026-04-07 after Phase 01 completion*
