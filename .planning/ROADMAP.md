@@ -64,12 +64,12 @@ Plans:
   2. All 6 report endpoints (simplified financial, full financial, production, aviculture, lote performance, advanced with filters) return correct data
   3. Health check endpoint responds at /health
   4. Cache layer (moka) reduces response time for heavy endpoints (dashboard, reports)
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
-- [ ] 03-03: TBD
+- [ ] 03-01-PLAN.md -- AviculturaService (9 endpoints: metricas, alertas, comparacao-industria, dashboard, stubs)
+- [ ] 03-02-PLAN.md -- RelatorioService + RelatorioAvancadoService (6 report endpoints with role filtering)
+- [ ] 03-03-PLAN.md -- CacheService (moka) + health check enhancement + cache wiring into handlers
 
 ### Phase 4: Vue Scaffold + Auth
 **Goal**: Users can log in to the Vue frontend against the Rust backend, navigate protected routes, and toggle dark mode / font scale
