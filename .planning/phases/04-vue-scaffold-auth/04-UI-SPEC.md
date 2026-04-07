@@ -55,17 +55,18 @@ Source: React ResponsiveNavigation.js drawerWidth=280, LoginPage.js p:6, MUI spa
 
 All sizes are at fontScale=1.0. Font scale multiplier (0.85-1.3, step 0.1) applies to all sizes dynamically via CSS custom property `--font-scale` or Vuetify theme override.
 
-| Role | Size | Weight | Line Height | Vuetify Mapping |
-|------|------|--------|-------------|-----------------|
-| Body | 16px (1rem) | 400 (regular) | 1.6 | body-1 / default text |
-| Label | 14px (0.875rem) | 500 (medium) | 1.5 | body-2, button, nav items |
-| Heading | 24px (1.5rem) | 600 (semibold) | 1.4 | h4 — page titles in PageContainer |
-| Display | 40px (2.5rem) | 700 (bold) | 1.2 | h1 — not used in Phase 4 but declared for scale |
+| Role | Size | Weight | Line Height | Vuetify Mapping | Usage in Phase 4 |
+|------|------|--------|-------------|-----------------|-------------------|
+| Caption | 12px (0.75rem) | 400 (regular) | 1.4 | caption | Role chip labels, breadcrumb text |
+| Label | 14px (0.875rem) | 400 (regular) | 1.5 | body-2 | Button text, nav items, loading message, menu items |
+| Body | 16px (1rem) | 400 (regular) | 1.6 | body-1, subtitle-1 | Body text, page subtitles, drawer brand name, form field labels |
+| Heading | 24px (1.5rem) | 700 (bold) | 1.4 | h4 | Page titles in PageContainer, brand title "GranjaTech" on login |
 
-Additional sizes used in Phase 4:
-- Caption: 12px (0.75rem), weight 400, line-height 1.4 — role chip labels, breadcrumb text
-- Subtitle: 17px (1.0625rem), weight 400, line-height 1.5 — page subtitles in PageContainer
-- Nav heading (drawer brand): 18px (1.125rem), weight 700, line-height 1.4 — "GranjaTech" in drawer
+Font weights (2 only):
+- **400 (regular):** All body text, subtitles, captions, labels, nav items (inactive), breadcrumbs, form fields
+- **700 (bold):** Page headings, brand title, active nav item text, drawer brand name, emphasis
+
+Hierarchy differentiation strategy: Size changes establish primary hierarchy (12 -> 14 -> 16 -> 24). Weight 700 adds emphasis within a size level (e.g., active vs inactive nav items both at 14px, differentiated by weight 400 vs 700).
 
 Font scale constants (from React AccessibilityContext):
 - Default: 1.0
@@ -133,8 +134,8 @@ Source: React theme.js getPalette, CONTEXT.md D-01
 | Login card | `v-card` | `max-width: 448px` (sm container), `border-radius: 16px`, elevation 24 |
 | Card content | `v-card-text` | Padding 48px (pa-12 in Vuetify spacing) |
 | Brand avatar | `v-avatar` | 80x80px, bg primary, contains `mdi-sprout` or `mdi-agriculture` icon at 40px |
-| Brand title | Typography h4 | "GranjaTech", weight 700, color primary |
-| Brand subtitle | Typography body1 | "Sistema de Gestao Agropecuaria", color text-secondary, centered |
+| Brand title | Typography h4 | "GranjaTech", 24px, weight 700, color primary |
+| Brand subtitle | Typography body1 | "Sistema de Gestao Agropecuaria", 16px, weight 400, color text-secondary, centered |
 | Email field | `v-text-field` | `label="Email"`, `type="email"`, `variant="outlined"`, `rounded="lg"` (8px radius), autofocus |
 | Password field | `v-text-field` | `label="Senha"`, `type="password"`, `variant="outlined"`, `rounded="lg"` |
 | Error alert | `v-alert` | `type="error"`, shown conditionally, margin-bottom 24px |
@@ -147,7 +148,7 @@ Source: React theme.js getPalette, CONTEXT.md D-01
 |---------|-------------------|------|
 | App bar | `v-app-bar` | `flat`, `border="b"`, bg surface, offset by drawer on md+ |
 | Hamburger | `v-app-bar-nav-icon` | Visible below md breakpoint only |
-| Page title | Typography h6 | Current route label, auto-detected from route meta or navigationItems lookup |
+| Page title | Typography h6 | Current route label, 16px weight 700 |
 | Dark mode toggle | `v-btn icon` | `mdi-weather-night` / `mdi-weather-sunny`, tooltip in Portuguese |
 | Font decrease | `v-btn icon` | `mdi-format-font-size-decrease`, disabled at min scale (opacity 0.5) |
 | Font increase | `v-btn icon` | `mdi-format-font-size-increase`, disabled at max scale (opacity 0.5) |
@@ -155,11 +156,11 @@ Source: React theme.js getPalette, CONTEXT.md D-01
 | User menu trigger | `v-btn` | Avatar (32px, primary bg, first letter) + user name text |
 | User menu | `v-menu` | Items: "Perfil" (mdi-account, link to /perfil), divider, "Sair" (mdi-logout, calls logout) |
 | Navigation drawer | `v-navigation-drawer` | Width 280px, permanent on md+, temporary on mobile |
-| Drawer header | Box | Padding 24px, row: agriculture icon (32px, primary) + "GranjaTech" h6 bold primary. Mobile: close button at end |
-| User info | Box | Padding 16px, avatar (40px, primary) + name (subtitle2, weight 600) + role chip (v-chip, size small, outlined, primary) |
-| Nav items | `v-list` | 13 items, role-filtered. Each: `v-list-item` with icon + label, rounded (8px), min-height 48px, horizontal padding 16px |
-| Active item | `v-list-item` | Background: primary, text: white, icon: white, font-weight 600 |
-| Inactive item | `v-list-item` | Background: transparent, text: text-primary, icon: primary, font-weight 500 |
+| Drawer header | Box | Padding 24px, row: agriculture icon (32px, primary) + "GranjaTech" 16px weight 700 primary. Mobile: close button at end |
+| User info | Box | Padding 16px, avatar (40px, primary) + name (14px, weight 700) + role chip (v-chip, size small, outlined, primary, 12px caption) |
+| Nav items | `v-list` | 13 items, role-filtered. Each: `v-list-item` with icon + label (14px), rounded (8px), min-height 48px, horizontal padding 16px |
+| Active item | `v-list-item` | Background: primary, text: white, icon: white, font-weight 700 |
+| Inactive item | `v-list-item` | Background: transparent, text: text-primary, icon: primary, font-weight 400 |
 | Logout button | `v-list-item` | Color error, icon mdi-logout, label "Sair", hover: error-light bg + white text |
 
 ### PageContainer.vue
@@ -168,10 +169,10 @@ Source: React theme.js getPalette, CONTEXT.md D-01
 |---------|-------------------|------|
 | Main wrapper | `v-main` | Offset by app bar and drawer automatically (Vuetify layout system) |
 | Container | `v-container` | `fluid`, max-width xl (1280px), padding-y 24px |
-| Breadcrumbs | `v-breadcrumbs` | Shown when not on "/", separator: mdi-chevron-right, margin-bottom 16px |
+| Breadcrumbs | `v-breadcrumbs` | Shown when not on "/", separator: mdi-chevron-right, margin-bottom 16px, 12px caption text |
 | Title row | Flex box | Row on sm+, column on xs. Space-between. Gap 16px. Margin-bottom 24px |
-| Title | Typography h4 | Weight 700, color text-primary |
-| Subtitle | Typography body1 | Weight 400, color text-secondary, margin-top 4px |
+| Title | Typography h4 | 24px, weight 700, color text-primary |
+| Subtitle | Typography body1 | 16px, weight 400, color text-secondary, margin-top 4px |
 | Action slot | Named slot | Right-aligned on sm+, full-width on xs |
 | Content | Default slot | Wrapped in `v-fade-transition` (300ms) |
 
@@ -181,7 +182,7 @@ Source: React theme.js getPalette, CONTEXT.md D-01
 |---------|-------------------|------|
 | Container | Flex box | Column, centered, gap 16px, min-height 200px (or 100vh if fullScreen prop) |
 | Spinner | `v-progress-circular` | `size` prop (default 40), `width="4"`, `color="primary"` |
-| Message | Typography body2 | Weight 500, color text-secondary, text from `message` prop (default "Carregando...") |
+| Message | Typography body2 | 14px, weight 400, color text-secondary, text from `message` prop (default "Carregando...") |
 | Full screen overlay | Conditional | position fixed, inset 0, bg white/0.9, z-index 9999 |
 
 ---
@@ -203,7 +204,7 @@ Source: React theme.js getPalette, CONTEXT.md D-01
 |-------|--------|
 | Desktop (md+) | Permanent drawer, app bar offset by 280px, no hamburger |
 | Mobile (<md) | Temporary overlay drawer, hamburger icon in app bar, drawer closes on nav click |
-| Active route | Nav item: primary background, white text and icon |
+| Active route | Nav item: primary background, white text and icon, weight 700 |
 | Hover (inactive) | Nav item: action.hover background (rgba(0,0,0,0.04) light / rgba(255,255,255,0.08) dark) |
 | Logout hover | Error-light background (#EF5350), white text |
 
