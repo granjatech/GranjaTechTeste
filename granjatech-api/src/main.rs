@@ -4,6 +4,7 @@ mod dto;
 mod errors;
 mod middleware;
 mod models;
+mod services;
 
 use actix_web::{web, App, HttpServer, HttpResponse};
 use tracing_actix_web::TracingLogger;
