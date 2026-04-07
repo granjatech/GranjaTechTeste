@@ -105,7 +105,7 @@ This document evolves at phase transitions and milestone boundaries.
 
 ## Current State
 
-Phase 01 (Rust Foundation) complete — compilable Rust project with Actix-web 4, SQLx models (16 entities), JWT auth, auth/granja CRUD services and handlers, CORS, Swagger UI. Human verification pending for DB connection, BCrypt compatibility, Swagger UI render, and role-based filtering.
+Phase 02 (Complete Backend CRUD) complete — all 37 CRUD endpoints operational in Rust backend: Lotes (7 handlers + mortalidade clamping), Dashboard (KPIs + resumo mensal), Financas (5-min edit window, admin-only delete), Consumo (racao + agua with per-bird metrics), Pesagem (growth summaries), Sanitario (eventos + cronograma vacinacao), Sensores (CRUD + public leituras), Estoque, Auditoria (read-only), Profile (view/edit/change-password). All endpoints tested live against PostgreSQL. RegistrosMortalidade SQL column names corrected during testing.
 
 ---
-*Last updated: 2026-04-07 after Phase 01 completion*
+*Last updated: 2026-04-07 after Phase 02 completion*
