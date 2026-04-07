@@ -1,10 +1,10 @@
 use chrono::{DateTime, Utc};
 use rust_decimal::Decimal;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 /// Relatorio de producao
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RelatorioProducaoDto {
     pub total_lotes: i32,
@@ -13,7 +13,7 @@ pub struct RelatorioProducaoDto {
 }
 
 /// Resumo de consumo para relatorio geral
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ConsumoResumoDto {
     pub data: DateTime<Utc>,
@@ -23,7 +23,7 @@ pub struct ConsumoResumoDto {
 }
 
 /// Resumo de pesagem para relatorio geral
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PesagemResumoDto {
     pub data: DateTime<Utc>,
@@ -32,7 +32,7 @@ pub struct PesagemResumoDto {
 }
 
 /// Resumo sanitario para relatorio geral
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct SanitarioResumoDto {
     pub data: DateTime<Utc>,
@@ -42,7 +42,7 @@ pub struct SanitarioResumoDto {
 }
 
 /// Resumo de sensor para relatorio geral
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct SensorResumoDto {
     pub data: DateTime<Utc>,
@@ -51,7 +51,7 @@ pub struct SensorResumoDto {
 }
 
 /// Relatorio geral de uma granja
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct GeralReportDto {
     pub granja_id: i32,
@@ -77,7 +77,7 @@ pub struct SetorReportDto<TItem: Serialize> {
 // === Avicultura Report DTOs (RELA-05) ===
 
 /// Top-level avicultura report response
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RelatorioAviculturaDto {
     pub periodo_inicio: DateTime<Utc>,
@@ -89,7 +89,7 @@ pub struct RelatorioAviculturaDto {
     pub benchmarks: BenchmarksAviculturaDto,
 }
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ResumoGeralAviculturaDto {
     pub total_aves_alojadas: i32,
@@ -102,7 +102,7 @@ pub struct ResumoGeralAviculturaDto {
     pub custo_total_sanitario: Decimal,
 }
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct DetalheLoteAviculturaDto {
     pub lote_id: i32,
@@ -130,7 +130,7 @@ pub struct DetalheLoteAviculturaDto {
     pub eventos_custo_total: Decimal,
 }
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct BenchmarksAviculturaDto {
     pub melhor_conversao_alimentar: Decimal,
@@ -141,7 +141,7 @@ pub struct BenchmarksAviculturaDto {
 
 // === Desempenho Lote DTOs (RELA-06) ===
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RelatorioDesempenhoLoteDto {
     pub lote_id: i32,
@@ -162,7 +162,7 @@ pub struct RelatorioDesempenhoLoteDto {
     pub data_geracao: DateTime<Utc>,
 }
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PerformanceLoteDto {
     pub quantidade_inicial: i32,
@@ -175,7 +175,7 @@ pub struct PerformanceLoteDto {
     pub iep: Decimal,
 }
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct CurvaCrescimentoItemDto {
     pub semana: i32,
@@ -187,7 +187,7 @@ pub struct CurvaCrescimentoItemDto {
     pub quantidade_amostrada: i32,
 }
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ConsumoRacaoGroupDto {
     pub tipo_racao: String,
@@ -196,7 +196,7 @@ pub struct ConsumoRacaoGroupDto {
     pub registros_por_dia: Vec<ConsumoRacaoDiaDto>,
 }
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ConsumoRacaoDiaDto {
     pub data: DateTime<Utc>,
@@ -205,7 +205,7 @@ pub struct ConsumoRacaoDiaDto {
     pub consumo_por_ave: Decimal,
 }
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ConsumoAguaItemDto {
     pub data: DateTime<Utc>,
@@ -215,7 +215,7 @@ pub struct ConsumoAguaItemDto {
     pub temperatura_ambiente: Option<Decimal>,
 }
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct HistoricoSanitarioItemDto {
     pub data: DateTime<Utc>,
@@ -228,7 +228,7 @@ pub struct HistoricoSanitarioItemDto {
     pub responsavel: Option<String>,
 }
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AnaliseMortalidadeItemDto {
     pub data: DateTime<Utc>,
@@ -239,7 +239,7 @@ pub struct AnaliseMortalidadeItemDto {
     pub aves_vivas: i32,
 }
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct QualidadeAmbientalItemDto {
     pub data_hora: DateTime<Utc>,
@@ -254,7 +254,7 @@ pub struct QualidadeAmbientalItemDto {
 }
 
 /// Registro de abate para relatorio
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RegistroAbateResponseDto {
     pub id: i32,

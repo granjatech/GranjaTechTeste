@@ -7,6 +7,7 @@ use crate::dto::financeiro::*;
 use crate::dto::relatorios::*;
 use crate::errors::AppError;
 use crate::middleware::jwt::Claims;
+use crate::services::cache_service::CacheService;
 use crate::services::relatorio_avancado_service::RelatorioAvancadoService;
 use crate::services::relatorio_service::RelatorioService;
 
@@ -78,18 +79,39 @@ pub async fn get_financeiro_simplificado(
     pool: web::Data<PgPool>,
     claims: Claims,
     query: web::Query<DateRangeQuery>,
+    cache: web::Data<CacheService>,
 ) -> Result<HttpResponse, AppError> {
     validate_date_range(&query.data_inicio, &query.data_fim)?;
     let user_id = claims.user_id()?;
-    let result = RelatorioService::financeiro_simplificado(
-        &pool,
+    let cache_key = format!(
+        "report_fin_simp_{}_{}_{}_{}",
         user_id,
-        &claims.role,
-        query.data_inicio,
-        query.data_fim,
-        query.granja_id,
-    )
-    .await?;
+        claims.role,
+        query.data_inicio.format("%Y%m%d"),
+        query.data_fim.format("%Y%m%d")
+    );
+    let ttl = std::time::Duration::from_secs(10 * 60); // 10 min per D-05
+
+    let result = cache
+        .get_or_set(
+            &cache_key,
+            || {
+                let pool = pool.clone();
+                let role = claims.role.clone();
+                let granja_id = query.granja_id;
+                let inicio = query.data_inicio;
+                let fim = query.data_fim;
+                async move {
+                    RelatorioService::financeiro_simplificado(
+                        &pool, user_id, &role, inicio, fim, granja_id,
+                    )
+                    .await
+                }
+            },
+            ttl,
+        )
+        .await?;
+
     Ok(HttpResponse::Ok().json(result))
 }
 
@@ -114,18 +136,37 @@ pub async fn get_financeiro(
     pool: web::Data<PgPool>,
     claims: Claims,
     query: web::Query<DateRangeQuery>,
+    cache: web::Data<CacheService>,
 ) -> Result<HttpResponse, AppError> {
     validate_date_range(&query.data_inicio, &query.data_fim)?;
     let user_id = claims.user_id()?;
-    let result = RelatorioService::financeiro(
-        &pool,
+    let cache_key = format!(
+        "report_fin_{}_{}_{}_{}",
         user_id,
-        &claims.role,
-        query.data_inicio,
-        query.data_fim,
-        query.granja_id,
-    )
-    .await?;
+        claims.role,
+        query.data_inicio.format("%Y%m%d"),
+        query.data_fim.format("%Y%m%d")
+    );
+    let ttl = std::time::Duration::from_secs(10 * 60); // 10 min per D-05
+
+    let result = cache
+        .get_or_set(
+            &cache_key,
+            || {
+                let pool = pool.clone();
+                let role = claims.role.clone();
+                let granja_id = query.granja_id;
+                let inicio = query.data_inicio;
+                let fim = query.data_fim;
+                async move {
+                    RelatorioService::financeiro(&pool, user_id, &role, inicio, fim, granja_id)
+                        .await
+                }
+            },
+            ttl,
+        )
+        .await?;
+
     Ok(HttpResponse::Ok().json(result))
 }
 
@@ -150,18 +191,36 @@ pub async fn get_producao(
     pool: web::Data<PgPool>,
     claims: Claims,
     query: web::Query<DateRangeQuery>,
+    cache: web::Data<CacheService>,
 ) -> Result<HttpResponse, AppError> {
     validate_date_range(&query.data_inicio, &query.data_fim)?;
     let user_id = claims.user_id()?;
-    let result = RelatorioService::producao(
-        &pool,
+    let cache_key = format!(
+        "report_prod_{}_{}_{}_{}",
         user_id,
-        &claims.role,
-        query.data_inicio,
-        query.data_fim,
-        query.granja_id,
-    )
-    .await?;
+        claims.role,
+        query.data_inicio.format("%Y%m%d"),
+        query.data_fim.format("%Y%m%d")
+    );
+    let ttl = std::time::Duration::from_secs(10 * 60); // 10 min per D-05
+
+    let result = cache
+        .get_or_set(
+            &cache_key,
+            || {
+                let pool = pool.clone();
+                let role = claims.role.clone();
+                let granja_id = query.granja_id;
+                let inicio = query.data_inicio;
+                let fim = query.data_fim;
+                async move {
+                    RelatorioService::producao(&pool, user_id, &role, inicio, fim, granja_id).await
+                }
+            },
+            ttl,
+        )
+        .await?;
+
     Ok(HttpResponse::Ok().json(result))
 }
 
@@ -186,18 +245,34 @@ pub async fn get_avicultura(
     pool: web::Data<PgPool>,
     _claims: Claims,
     query: web::Query<AviculturaReportQuery>,
+    cache: web::Data<CacheService>,
 ) -> Result<HttpResponse, AppError> {
     // Validate date range only if both provided
     if let (Some(ref inicio), Some(ref fim)) = (query.data_inicio, query.data_fim) {
         validate_date_range(inicio, fim)?;
     }
-    let result = RelatorioService::avicultura(
-        &pool,
-        query.data_inicio,
-        query.data_fim,
-        query.lote_id,
-    )
-    .await?;
+    let cache_key = format!(
+        "report_avic_{:?}_{:?}_{:?}",
+        query.data_inicio.map(|d| d.format("%Y%m%d").to_string()),
+        query.data_fim.map(|d| d.format("%Y%m%d").to_string()),
+        query.lote_id
+    );
+    let ttl = std::time::Duration::from_secs(10 * 60); // 10 min per D-05
+
+    let result = cache
+        .get_or_set(
+            &cache_key,
+            || {
+                let pool = pool.clone();
+                let inicio = query.data_inicio;
+                let fim = query.data_fim;
+                let lote_id = query.lote_id;
+                async move { RelatorioService::avicultura(&pool, inicio, fim, lote_id).await }
+            },
+            ttl,
+        )
+        .await?;
+
     Ok(HttpResponse::Ok().json(result))
 }
 
@@ -220,9 +295,23 @@ pub async fn get_desempenho_lote(
     pool: web::Data<PgPool>,
     _claims: Claims,
     path: web::Path<i32>,
+    cache: web::Data<CacheService>,
 ) -> Result<HttpResponse, AppError> {
     let lote_id = path.into_inner();
-    let result = RelatorioService::desempenho_lote(&pool, lote_id).await?;
+    let cache_key = format!("report_desemp_{}", lote_id);
+    let ttl = std::time::Duration::from_secs(10 * 60); // 10 min per D-05
+
+    let result = cache
+        .get_or_set(
+            &cache_key,
+            || {
+                let pool = pool.clone();
+                async move { RelatorioService::desempenho_lote(&pool, lote_id).await }
+            },
+            ttl,
+        )
+        .await?;
+
     Ok(HttpResponse::Ok().json(result))
 }
 

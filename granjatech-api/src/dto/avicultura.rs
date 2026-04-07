@@ -71,7 +71,7 @@ pub struct PontoCurvaDto {
 }
 
 /// Alerta de parametro fora do aceitavel
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AlertaParametroDto {
     pub tipo_alerta: String,
@@ -87,7 +87,7 @@ pub struct AlertaParametroDto {
 }
 
 /// Comparacao de metricas com padroes da industria
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ComparacaoIndustriaDto {
     pub lote_id: i32,
@@ -103,7 +103,7 @@ pub struct ComparacaoIndustriaDto {
 }
 
 /// Metrica comparada com padrao da industria
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct MetricaComparacaoDto {
     pub nome: String,
@@ -116,7 +116,7 @@ pub struct MetricaComparacaoDto {
 }
 
 /// Projecao de abate
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ProjecaoAbateDto {
     pub lote_id: i32,
@@ -156,7 +156,7 @@ pub struct RegistroMortalidadePorFaseDto {
 }
 
 /// Resumo sanitario de um lote
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ResumoSanitarioDto {
     pub lote_id: i32,
@@ -174,7 +174,7 @@ pub struct ResumoSanitarioDto {
 }
 
 /// Resumo de eventos sanitarios por tipo
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct EventoSanitarioResumoDto {
     pub tipo_evento: String,
@@ -184,7 +184,7 @@ pub struct EventoSanitarioResumoDto {
 }
 
 /// Cronograma de vacinacao
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct VacinacaoScheduleDto {
     pub vacina: String,
@@ -195,7 +195,7 @@ pub struct VacinacaoScheduleDto {
 }
 
 /// Proxima acao sanitaria programada
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ProximaAcaoSanitariaDto {
     pub acao: String,
@@ -205,7 +205,7 @@ pub struct ProximaAcaoSanitariaDto {
 }
 
 /// Metricas principais do lote (composite response for GET /{loteId}/metricas)
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct MetricasLoteDto {
     pub iep: Decimal,
@@ -217,7 +217,7 @@ pub struct MetricasLoteDto {
 }
 
 /// Dashboard completo de avicultura (composite response for GET /{loteId}/dashboard)
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct DashboardAviculturaDto {
     pub metricas: MetricasLoteDto,

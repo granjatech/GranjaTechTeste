@@ -1,9 +1,9 @@
 use rust_decimal::Decimal;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 /// KPIs do dashboard principal
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct DashboardKpiDto {
     pub total_entradas: Decimal,
@@ -13,7 +13,7 @@ pub struct DashboardKpiDto {
 }
 
 /// Resumo mensal financeiro
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct MonthlySummaryDto {
     pub mes: String,

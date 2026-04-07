@@ -24,3 +24,4 @@ utoipa = { version = "5", features = ["actix_extras", "chrono", "decimal"] }
 utoipa-swagger-ui = { version = "9", features = ["actix-web"] }
 uuid = { version = "1", features = ["v4", "serde"] }
 tokio = { version = "1", features = ["full"] }
+moka = { version = "0.12", features = ["future"] }

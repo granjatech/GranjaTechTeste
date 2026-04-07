@@ -31,7 +31,7 @@ pub struct UpdateLoteDto {
 }
 
 /// DTO de resposta de lote com metricas computadas
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct LoteResponseDto {
     pub id: i32,

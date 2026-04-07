@@ -31,7 +31,7 @@ pub struct UpdateTransacaoDto {
 }
 
 /// DTO simplificado de transacao para listagem
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct TransacaoSimplificadaDto {
     pub id: i32,
@@ -45,7 +45,7 @@ pub struct TransacaoSimplificadaDto {
 }
 
 /// Relatorio financeiro completo
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RelatorioFinanceiroDto {
     pub total_entradas: Decimal,
@@ -55,7 +55,7 @@ pub struct RelatorioFinanceiroDto {
 }
 
 /// Relatorio financeiro simplificado
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RelatorioFinanceiroSimplificadoDto {
     pub total_entradas: Decimal,
@@ -65,7 +65,7 @@ pub struct RelatorioFinanceiroSimplificadoDto {
 }
 
 /// Item de relatorio financeiro por periodo
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct FinanceReportItemDto {
     pub data: DateTime<Utc>,
@@ -75,7 +75,7 @@ pub struct FinanceReportItemDto {
 }
 
 /// Relatorio financeiro por granja
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct FinanceReportDto {
     pub granja_id: i32,

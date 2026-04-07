@@ -202,6 +202,10 @@ async fn main() -> std::io::Result<()> {
     let config_data = web::Data::new(config);
     let pool_data = web::Data::new(pool);
 
+    // Cache layer (CACH-01, D-04/D-05)
+    let cache_service = services::cache_service::CacheService::new(10_000);
+    let cache_data = web::Data::new(cache_service);
+
     HttpServer::new(move || {
         // CORS configurado com origens explicitas (FOUND-02, T-1-05)
         let mut cors = Cors::default()
@@ -222,11 +226,16 @@ async fn main() -> std::io::Result<()> {
             .wrap(cors)
             .app_data(config_data.clone())
             .app_data(pool_data.clone())
+            .app_data(cache_data.clone())
             .configure(handlers::configure_routes)
             .route(
                 "/health",
                 web::get().to(|| async {
-                    HttpResponse::Ok().json(serde_json::json!({"status": "ok"}))
+                    HttpResponse::Ok().json(serde_json::json!({
+                        "status": "ok",
+                        "service": "granjatech-api",
+                        "timestamp": chrono::Utc::now()
+                    }))
                 }),
             );
 

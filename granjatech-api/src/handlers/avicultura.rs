@@ -5,6 +5,7 @@ use crate::dto::avicultura::*;
 use crate::errors::AppError;
 use crate::middleware::jwt::Claims;
 use crate::services::avicultura_service::AviculturaService;
+use crate::services::cache_service::CacheService;
 
 /// Role guard helper -- rejects Financeiro role (per D-09: Administrador+Produtor only)
 fn require_admin_or_produtor(claims: &Claims) -> Result<(), AppError> {
@@ -248,9 +249,23 @@ pub async fn get_dashboard(
     pool: web::Data<PgPool>,
     claims: Claims,
     path: web::Path<i32>,
+    cache: web::Data<CacheService>,
 ) -> Result<HttpResponse, AppError> {
     require_admin_or_produtor(&claims)?;
     let lote_id = path.into_inner();
-    let dashboard = AviculturaService::get_dashboard(&pool, lote_id).await?;
+    let cache_key = format!("avicultura_dashboard_{}", lote_id);
+    let ttl = std::time::Duration::from_secs(5 * 60); // 5 min per D-05
+
+    let dashboard = cache
+        .get_or_set(
+            &cache_key,
+            || {
+                let pool = pool.clone();
+                async move { AviculturaService::get_dashboard(&pool, lote_id).await }
+            },
+            ttl,
+        )
+        .await?;
+
     Ok(HttpResponse::Ok().json(dashboard))
 }

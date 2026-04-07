@@ -13,3 +13,4 @@ pub mod profile_service;
 pub mod avicultura_service;
 pub mod relatorio_service;
 pub mod relatorio_avancado_service;
+pub mod cache_service;
