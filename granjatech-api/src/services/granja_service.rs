@@ -18,8 +18,8 @@ impl GranjaService {
         let granjas = match user_role {
             "Administrador" => {
                 sqlx::query_as::<_, Granja>(
-                    r#"SELECT "Id" as id, "Codigo" as codigo, "Nome" as nome,
-                              "Localizacao" as localizacao, "UsuarioId" as usuario_id
+                    r#"SELECT "Id", "Codigo", "Nome",
+                              "Localizacao", "UsuarioId"
                        FROM "Granjas"
                        ORDER BY "Id""#,
                 )
@@ -28,8 +28,8 @@ impl GranjaService {
             }
             "Produtor" => {
                 sqlx::query_as::<_, Granja>(
-                    r#"SELECT "Id" as id, "Codigo" as codigo, "Nome" as nome,
-                              "Localizacao" as localizacao, "UsuarioId" as usuario_id
+                    r#"SELECT "Id", "Codigo", "Nome",
+                              "Localizacao", "UsuarioId"
                        FROM "Granjas"
                        WHERE "UsuarioId" = $1
                        ORDER BY "Id""#,
@@ -40,8 +40,8 @@ impl GranjaService {
             }
             "Financeiro" => {
                 sqlx::query_as::<_, Granja>(
-                    r#"SELECT g."Id" as id, g."Codigo" as codigo, g."Nome" as nome,
-                              g."Localizacao" as localizacao, g."UsuarioId" as usuario_id
+                    r#"SELECT g."Id", g."Codigo", g."Nome",
+                              g."Localizacao", g."UsuarioId"
                        FROM "Granjas" g
                        INNER JOIN "FinanceiroProdutor" fp ON fp."ProdutorId" = g."UsuarioId"
                        WHERE fp."FinanceiroId" = $1
@@ -65,8 +65,8 @@ impl GranjaService {
         user_role: &str,
     ) -> Result<Granja, AppError> {
         let granja = sqlx::query_as::<_, Granja>(
-            r#"SELECT "Id" as id, "Codigo" as codigo, "Nome" as nome,
-                      "Localizacao" as localizacao, "UsuarioId" as usuario_id
+            r#"SELECT "Id", "Codigo", "Nome",
+                      "Localizacao", "UsuarioId"
                FROM "Granjas"
                WHERE "Id" = $1"#,
         )
@@ -143,8 +143,8 @@ impl GranjaService {
         let granja = sqlx::query_as::<_, Granja>(
             r#"INSERT INTO "Granjas" ("Codigo", "Nome", "Localizacao", "UsuarioId")
                VALUES ($1, $2, $3, $4)
-               RETURNING "Id" as id, "Codigo" as codigo, "Nome" as nome,
-                         "Localizacao" as localizacao, "UsuarioId" as usuario_id"#,
+               RETURNING "Id", "Codigo", "Nome",
+                         "Localizacao", "UsuarioId""#,
         )
         .bind(&novo_codigo)
         .bind(&dto.nome)
@@ -200,8 +200,8 @@ impl GranjaService {
             r#"UPDATE "Granjas"
                SET "Nome" = $1, "Localizacao" = $2, "UsuarioId" = $3
                WHERE "Id" = $4
-               RETURNING "Id" as id, "Codigo" as codigo, "Nome" as nome,
-                         "Localizacao" as localizacao, "UsuarioId" as usuario_id"#,
+               RETURNING "Id", "Codigo", "Nome",
+                         "Localizacao", "UsuarioId""#,
         )
         .bind(&dto.nome)
         .bind(&dto.localizacao)
