@@ -51,9 +51,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- Lotes CRUD (mortalidade, computed properties) + Dashboard (KPIs, monthly summary)
-- [ ] 02-02-PLAN.md -- Financas (5-min edit window) + Consumo + Pesagem + Sanitario
-- [ ] 02-03-PLAN.md -- Sensores (public leituras) + Estoque + Auditoria + Profile (password change)
+- [x] 02-01-PLAN.md -- Lotes CRUD (mortalidade, computed properties) + Dashboard (KPIs, monthly summary)
+- [x] 02-02-PLAN.md -- Financas (5-min edit window) + Consumo + Pesagem + Sanitario
+- [x] 02-03-PLAN.md -- Sensores (public leituras) + Estoque + Auditoria + Profile (password change)
 
 ### Phase 3: Reports & Business Logic
 **Goal**: All advanced analytics (avicultura module) and report endpoints produce results identical to the .NET backend
