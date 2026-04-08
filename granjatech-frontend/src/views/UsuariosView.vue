@@ -58,7 +58,10 @@ const emailRules = [
   (v: string) => /.+@.+\..+/.test(v) || 'Email invalido',
 ]
 const perfilRule = [(v: number | null) => !!v || 'Perfil obrigatorio']
-const senhaCreateRule = [(v: string) => !!v || 'Senha obrigatoria']
+const senhaCreateRule = [
+  (v: string) => !!v || 'Senha obrigatoria',
+  (v: string) => v.length >= 6 || 'Senha deve ter no minimo 6 caracteres',
+]
 
 function getRoleColor(role: string): string {
   switch (role) {
