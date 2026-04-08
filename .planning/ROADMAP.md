@@ -115,11 +115,11 @@ Plans:
   1. `docker-compose up` starts all three containers (PostgreSQL, Rust backend, Vue/nginx frontend) without errors
   2. Health check endpoint at /health responds with 200 OK from within the container
   3. User can access the full application through the nginx-served frontend and perform end-to-end workflows
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 06-01: TBD
-- [ ] 06-02: TBD
+- [ ] 06-01-PLAN.md -- Rust Dockerfile (cargo-chef) + Vue Dockerfile + nginx.conf (reverse proxy) + .dockerignore files
+- [ ] 06-02-PLAN.md -- docker-compose.yml (Rust+Vue stack) + full stack verification checkpoint
 
 ## Progress
 
