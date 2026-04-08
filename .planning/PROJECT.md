@@ -39,16 +39,16 @@ Funcionalidades existentes no sistema atual (inferidas do codebase):
 Migração para novo stack mantendo paridade:
 
 - [ ] Backend Rust (Actix-web 4 + SQLx) implementando todos os 60+ endpoints
-- [ ] Frontend Vue 3 (Vuetify 3 + TypeScript) com todas as 15 views
+- [x] Frontend Vue 3 (Vuetify 3 + TypeScript) com todas as 15 views — Validated in Phase 5: vue-crud-views
 - [ ] JWT compatível (mesma estrutura de claims: id, email, role)
 - [ ] BCrypt hash compatível com senhas existentes no PostgreSQL
 - [ ] Mesmo banco PostgreSQL 16 — sem migração de schema
 - [ ] Swagger/OpenAPI via utoipa
 - [ ] Docker Compose atualizado (Rust + Vue no lugar de .NET + React)
 - [ ] Cache in-memory via moka (substituindo MemoryCache)
-- [ ] Gráficos via vue-chartjs (substituindo Recharts)
-- [ ] Pinia stores (substituindo React Context)
-- [ ] Vue Router com navigation guards (substituindo ProtectedRoute)
+- [x] Gráficos via vue-chartjs (substituindo Recharts) — Validated in Phase 5: vue-crud-views
+- [x] Pinia stores (substituindo React Context) — Validated in Phase 4+5
+- [x] Vue Router com navigation guards (substituindo ProtectedRoute) — Validated in Phase 4+5
 
 ### Out of Scope
 
@@ -105,7 +105,7 @@ This document evolves at phase transitions and milestone boundaries.
 
 ## Current State
 
-Phase 04 (Vue Scaffold + Auth) complete — Vue 3 + Vuetify 3 + TypeScript + Vite project scaffolded in `granjatech-frontend/`. Vuetify theme with exact React color palette (#2E7D32 primary, #FF6F00 secondary, dark/light mode). Auth Pinia store (login/logout/hydrate with jwt-decode). Accessibility Pinia store (dark mode toggle, font scale 0.85-1.3, same localStorage keys as React). Axios API service with Bearer token and 401 redirect interceptors. Vue Router with 16 routes and beforeEach auth guard. ResponsiveNavigation with 13 role-filtered items, permanent/temporary drawer. PageContainer with breadcrumbs. LoginView with gradient background. All automated checks passed. Human UAT pending (login flow, dark mode, font scale, navigation, session persistence).
+Phase 05 (Vue CRUD Views) complete — All 14 remaining views implemented in Vue 3 + Vuetify 3 + TypeScript. Dashboard with KPI cards and vue-chartjs bar chart. 6 CRUD views (Granjas, Lotes, Usuarios, Financeiro, Estoque, Sensores) with v-data-table, v-dialog forms, delete confirmation, and snackbar feedback. 4 data-intensive views (Consumo, Pesagem, Sensores, Sanitario) with line chart visualizations. Avicultura analytics dashboard with growth curves and industry comparison. Relatorios with 6 report types and PDF/Excel export via useExport composable. Router fully updated — zero PlaceholderView references remain. Human UAT pending (visual parity, responsive layout, dark mode, CRUD e2e, export).
 
 ---
-*Last updated: 2026-04-07 after Phase 04 completion*
+*Last updated: 2026-04-08 after Phase 05 completion*
