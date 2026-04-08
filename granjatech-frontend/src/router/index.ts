@@ -78,13 +78,13 @@ const routes = [
     path: '/usuarios',
     name: 'Usuarios',
     component: () => import('@/views/UsuariosView.vue'),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: ['Administrador'] },
   },
   {
     path: '/auditoria',
     name: 'Auditoria',
     component: () => import('@/views/AuditoriaView.vue'),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: ['Administrador'] },
   },
   {
     path: '/perfil',
@@ -110,6 +110,10 @@ router.beforeEach((to) => {
 
   if (to.meta.requiresAuth !== false && !auth.isAuthenticated) {
     return { name: 'Login' }
+  }
+
+  if (to.meta.roles && !(to.meta.roles as string[]).includes(auth.user?.role)) {
+    return { path: '/' }
   }
 
   if (to.name === 'Login' && auth.isAuthenticated) {
