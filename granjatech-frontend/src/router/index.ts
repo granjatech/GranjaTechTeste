@@ -11,7 +11,7 @@ const routes = [
   {
     path: '/',
     name: 'Dashboard',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/DashboardView.vue'),
     meta: { requiresAuth: true },
   },
   {
@@ -77,19 +77,19 @@ const routes = [
   {
     path: '/usuarios',
     name: 'Usuarios',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/UsuariosView.vue'),
     meta: { requiresAuth: true },
   },
   {
     path: '/auditoria',
     name: 'Auditoria',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/AuditoriaView.vue'),
     meta: { requiresAuth: true },
   },
   {
     path: '/perfil',
     name: 'Perfil',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/ProfileView.vue'),
     meta: { requiresAuth: true },
   },
   {
