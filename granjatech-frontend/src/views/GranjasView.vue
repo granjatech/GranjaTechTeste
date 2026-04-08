@@ -219,20 +219,22 @@ onMounted(() => {
         </template>
 
         <template #item.actions="{ item }">
-          <v-btn
-            icon="mdi-pencil"
-            size="small"
-            variant="text"
-            class="mr-1"
-            @click="openEdit(item)"
-          />
-          <v-btn
-            icon="mdi-delete"
-            size="small"
-            variant="text"
-            color="error"
-            @click="openDelete(item)"
-          />
+          <template v-if="canCreate">
+            <v-btn
+              icon="mdi-pencil"
+              size="small"
+              variant="text"
+              class="mr-1"
+              @click="openEdit(item)"
+            />
+            <v-btn
+              icon="mdi-delete"
+              size="small"
+              variant="text"
+              color="error"
+              @click="openDelete(item)"
+            />
+          </template>
         </template>
       </v-data-table>
     </v-card>
