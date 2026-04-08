@@ -35,7 +35,7 @@ const routes = [
   {
     path: '/avicultura',
     name: 'Avicultura Pro',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/AviculturaView.vue'),
     meta: { requiresAuth: true },
   },
   {
@@ -71,7 +71,7 @@ const routes = [
   {
     path: '/relatorios',
     name: 'Relatorios',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/RelatoriosView.vue'),
     meta: { requiresAuth: true },
   },
   {
