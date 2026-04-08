@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import api from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
 import PageContainer from '@/components/PageContainer.vue'
+import { PERFIL_OPTIONS } from '@/constants/perfis'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 interface Usuario {
@@ -46,11 +47,7 @@ const headers = [
   { title: 'Acoes', key: 'actions', sortable: false, align: 'end' as const },
 ]
 
-const perfilOptions = [
-  { title: 'Administrador', value: 1 },
-  { title: 'Produtor', value: 2 },
-  { title: 'Financeiro', value: 3 },
-]
+const perfilOptions = PERFIL_OPTIONS
 
 const requiredRule = [(v: string) => !!v || 'Campo obrigatorio']
 const emailRules = [
