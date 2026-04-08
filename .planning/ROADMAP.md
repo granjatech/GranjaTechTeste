@@ -98,14 +98,14 @@ Plans:
   3. Data-intensive views (Consumo, Pesagem, Sanitario, Avicultura) display charts and summaries correctly
   4. Relatorios view generates reports and exports to PDF (jsPDF) and Excel (SheetJS)
   5. All views are responsive (mobile + desktop) and respect the current theme/font scale
-**Plans**: TBD
+**Plans:** 4 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
-- [ ] 05-03: TBD
-- [ ] 05-04: TBD
+- [ ] 05-01-PLAN.md -- DashboardView + ProfileView + AuditoriaView + UsuariosView (install vue-chartjs + chart.js)
+- [ ] 05-02-PLAN.md -- GranjasView + LotesView + EstoqueView + FinanceiroView (standard CRUD)
+- [ ] 05-03-PLAN.md -- ConsumoView + PesagemView + SensoresView + SanitarioView (data + charts)
+- [ ] 05-04-PLAN.md -- AviculturaView + RelatoriosView + useExport composable (complex views)
 
 ### Phase 6: Docker & Finalization
 **Goal**: The entire stack (PostgreSQL + Rust backend + Vue frontend) runs via a single docker-compose command
