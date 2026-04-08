@@ -41,25 +41,25 @@ const routes = [
   {
     path: '/consumo',
     name: 'Consumo',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/ConsumoView.vue'),
     meta: { requiresAuth: true },
   },
   {
     path: '/pesagem',
     name: 'Pesagens',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/PesagemView.vue'),
     meta: { requiresAuth: true },
   },
   {
     path: '/sanitario',
     name: 'Sanitario',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/SanitarioView.vue'),
     meta: { requiresAuth: true },
   },
   {
     path: '/sensores',
     name: 'Sensores',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/SensoresView.vue'),
     meta: { requiresAuth: true },
   },
   {
