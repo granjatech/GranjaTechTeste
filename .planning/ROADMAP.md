@@ -118,8 +118,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 06-01-PLAN.md -- Rust Dockerfile (cargo-chef) + Vue Dockerfile + nginx.conf (reverse proxy) + .dockerignore files
-- [ ] 06-02-PLAN.md -- docker-compose.yml (Rust+Vue stack) + full stack verification checkpoint
+- [x] 06-01-PLAN.md -- Rust Dockerfile (cargo-chef) + Vue Dockerfile + nginx.conf (reverse proxy) + .dockerignore files
+- [x] 06-02-PLAN.md -- docker-compose.yml (Rust+Vue stack) + full stack verification checkpoint
 
 ## Progress
 
