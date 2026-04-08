@@ -265,7 +265,7 @@ function getComparacaoChartData() {
   // Fallback: use individual metric properties from comparacao
   const comp = comparacao.value
   if (comp?.conversaoAlimentar) {
-    const items = [comp.conversaoAlimentar, comp.ganhoMedioDiario, comp.viabilidade, comp.iep].filter(Boolean)
+    const items = [comp.conversaoAlimentar, comp.ganhoMedioDiario, comp.viabilidade, comp.iep].filter((m): m is ComparacaoMetrica => Boolean(m))
     return {
       labels: items.map((m: ComparacaoMetrica) => m.nome),
       datasets: [
