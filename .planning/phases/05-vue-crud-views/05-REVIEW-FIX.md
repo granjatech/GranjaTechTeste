@@ -1,24 +1,24 @@
 ---
 phase: 05-vue-crud-views
-fixed_at: 2026-04-08T14:45:00Z
+fixed_at: 2026-04-08T15:45:00Z
 review_path: .planning/phases/05-vue-crud-views/05-REVIEW.md
-iteration: 1
-findings_in_scope: 8
-fixed: 8
-skipped: 0
-status: all_fixed
+iteration: 2
+findings_in_scope: 13
+fixed: 12
+skipped: 1
+status: partial
 ---
 
 # Phase 5: Code Review Fix Report
 
-**Fixed at:** 2026-04-08T14:45:00Z
+**Fixed at:** 2026-04-08T15:45:00Z
 **Source review:** .planning/phases/05-vue-crud-views/05-REVIEW.md
-**Iteration:** 1
+**Iteration:** 2
 
 **Summary:**
-- Findings in scope: 8
-- Fixed: 8
-- Skipped: 0
+- Findings in scope: 13 (1 critical, 7 warnings, 5 info)
+- Fixed: 12
+- Skipped: 1
 
 ## Fixed Issues
 
@@ -56,7 +56,7 @@ status: all_fixed
 
 **Files modified:** `granjatech-frontend/src/views/RelatoriosView.vue`
 **Commit:** bdf9b60
-**Applied fix:** Moved all validation checks (cases 0-5) into a separate switch before `loading.value = true`. The try block now only contains fetch logic, ensuring `finally` always runs when loading is set. Also moved cases 4 and 5 validation which were still inline in the original try block.
+**Applied fix:** Moved all validation checks (cases 0-5) into a separate switch before `loading.value = true`. The try block now only contains fetch logic, ensuring `finally` always runs when loading is set.
 
 ### WR-06: GranjasView Edit/Delete Buttons Shown to All Roles
 
@@ -70,8 +70,40 @@ status: all_fixed
 **Commit:** 6519f67
 **Applied fix:** Added `if (!formRef.value) return` guard before `formRef.value.validate()` in all five views.
 
+### IN-01: Console.error Calls Should Be Removed for Production
+
+**Files modified:** `AuditoriaView.vue`, `AviculturaView.vue`, `ConsumoView.vue`, `DashboardView.vue`, `EstoqueView.vue`, `FinanceiroView.vue`, `GranjasView.vue`, `LotesView.vue`, `PesagemView.vue`, `ProfileView.vue`, `RelatoriosView.vue`, `SanitarioView.vue`, `SensoresView.vue`, `UsuariosView.vue`
+**Commit:** 309a1b2
+**Applied fix:** Removed all 25 `console.error` calls across 14 view files. Each catch block already sets an error state variable (`error.value` or calls `showSnackbar`), so the console.error calls were redundant. For the one catch block in SanitarioView that only had console.error (cronograma fetch), replaced with a comment noting it is supplementary data that fails silently.
+
+### IN-02: Duplicated formatDate and formatCurrency Functions
+
+**Files modified:** `granjatech-frontend/src/composables/useFormatters.ts` (new), `AuditoriaView.vue`, `AviculturaView.vue`, `ConsumoView.vue`, `DashboardView.vue`, `EstoqueView.vue`, `FinanceiroView.vue`, `LotesView.vue`, `PesagemView.vue`, `RelatoriosView.vue`, `SanitarioView.vue`, `SensoresView.vue`
+**Commits:** 829b36b (composable creation), 309a1b2 (view updates)
+**Applied fix:** Created `useFormatters` composable with `formatDate`, `formatDateTime`, and `formatCurrency` functions. Updated all 11 views that had local duplicates to import from the composable. The composable uses consistent pt-BR locale formatting with null-safety. AuditoriaView and SensoresView use `formatDateTime` (date+time), all others use `formatDate` (date only).
+
+### IN-03: TypeScript any Casts Used in Multiple Places
+
+**Files modified:** `AviculturaView.vue`, `LotesView.vue`, `RelatoriosView.vue`
+**Commit:** ed9f626
+**Applied fix:** In AviculturaView: replaced `any` type on `ComparacaoIndustria` fields with `ComparacaoMetrica`, added optional `metrica` and `valor` fields to `ComparacaoMetrica` interface for API response variants, replaced all `(m: any)` map callbacks with `(m: ComparacaoMetrica)`, replaced `catch (e: any)` with `catch`. In LotesView: replaced `payload: any` with `Record<string, string | number | null>`, replaced `catch (err: any)` with `catch (err: unknown)` using typed assertion. In RelatoriosView: replaced `response: any` with `{ data: unknown } | undefined`, replaced `catch (e: any)` with `catch (e: unknown)` using typed assertion, replaced `n(v: any)` with `n(v: unknown)`. Remaining `any` in Vuetify template slot destructuring left as-is since those require complex generic typing.
+
+### IN-05: Hardcoded Profile ID Values
+
+**Files modified:** `granjatech-frontend/src/constants/perfis.ts` (new), `UsuariosView.vue`
+**Commit:** 6ef52eb
+**Applied fix:** Created shared constants module `src/constants/perfis.ts` with `PERFIL_IDS` and `PERFIL_OPTIONS` exports. The constants document the backend contract (seeded database values) with clear comments. Updated UsuariosView to import `PERFIL_OPTIONS` instead of hardcoding the array.
+
+## Skipped Issues
+
+### IN-04: Unused Import -- computed in ConsumoView
+
+**File:** `granjatech-frontend/src/views/ConsumoView.vue:2`
+**Reason:** Reviewer explicitly marked this as "Disregard -- no issue" after determining `computed` is correctly used.
+**Original issue:** `computed` import appeared potentially unused, but reviewer confirmed it is used.
+
 ---
 
-_Fixed: 2026-04-08T14:45:00Z_
+_Fixed: 2026-04-08T15:45:00Z_
 _Fixer: Claude (gsd-code-fixer)_
-_Iteration: 1_
+_Iteration: 2_
