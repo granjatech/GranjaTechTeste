@@ -89,37 +89,53 @@ function clearReport() {
 }
 
 async function gerarRelatorio() {
-  loading.value = true
   reportData.value = null
   error.value = ''
 
+  // Validate before setting loading state
+  switch (activeTab.value) {
+    case 0: // Financeiro Simplificado
+      if (!granjaId.value) { error.value = 'Selecione uma granja'; return }
+      break
+    case 1: // Financeiro Completo
+      if (!granjaId.value) { error.value = 'Selecione uma granja'; return }
+      if (!dataInicio.value || !dataFim.value) { error.value = 'Selecione as datas'; return }
+      break
+    case 2: // Producao
+      if (!granjaId.value) { error.value = 'Selecione uma granja'; return }
+      break
+    case 3: // Avicultura
+      if (!loteId.value) { error.value = 'Selecione um lote'; return }
+      break
+    case 4: // Desempenho Lote
+      if (!loteId.value) { error.value = 'Selecione um lote'; return }
+      break
+    case 5: // Avancado
+      if (!granjaId.value) { error.value = 'Selecione uma granja'; return }
+      if (!dataInicio.value || !dataFim.value) { error.value = 'Selecione as datas'; return }
+      break
+  }
+
+  loading.value = true
   try {
     let response: any
     switch (activeTab.value) {
-      case 0: // Financeiro Simplificado
-        if (!granjaId.value) { error.value = 'Selecione uma granja'; return }
+      case 0:
         response = await api.get('/relatorios/financeiro-simplificado', { params: { granjaId: granjaId.value } })
         break
-      case 1: // Financeiro Completo
-        if (!granjaId.value) { error.value = 'Selecione uma granja'; return }
-        if (!dataInicio.value || !dataFim.value) { error.value = 'Selecione as datas'; return }
+      case 1:
         response = await api.get('/relatorios/financeiro', { params: { granjaId: granjaId.value, dataInicio: dataInicio.value, dataFim: dataFim.value } })
         break
-      case 2: // Producao
-        if (!granjaId.value) { error.value = 'Selecione uma granja'; return }
+      case 2:
         response = await api.get('/relatorios/producao', { params: { granjaId: granjaId.value } })
         break
-      case 3: // Avicultura
-        if (!loteId.value) { error.value = 'Selecione um lote'; return }
+      case 3:
         response = await api.get('/relatorios/avicultura', { params: { loteId: loteId.value } })
         break
-      case 4: // Desempenho Lote
-        if (!loteId.value) { error.value = 'Selecione um lote'; return }
+      case 4:
         response = await api.get('/relatorios/desempenho-lote', { params: { loteId: loteId.value } })
         break
-      case 5: // Avancado
-        if (!granjaId.value) { error.value = 'Selecione uma granja'; return }
-        if (!dataInicio.value || !dataFim.value) { error.value = 'Selecione as datas'; return }
+      case 5:
         response = await api.get('/relatorios/avancado', { params: { tipo: tipoAvancado.value, granjaId: granjaId.value, dataInicio: dataInicio.value, dataFim: dataFim.value } })
         break
     }
