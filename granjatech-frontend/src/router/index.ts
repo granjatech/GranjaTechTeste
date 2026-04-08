@@ -17,19 +17,19 @@ const routes = [
   {
     path: '/granjas',
     name: 'Granjas',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/GranjasView.vue'),
     meta: { requiresAuth: true },
   },
   {
     path: '/lotes',
     name: 'Lotes',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/LotesView.vue'),
     meta: { requiresAuth: true },
   },
   {
     path: '/estoque',
     name: 'Estoque',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/EstoqueView.vue'),
     meta: { requiresAuth: true },
   },
   {
@@ -65,7 +65,7 @@ const routes = [
   {
     path: '/financeiro',
     name: 'Financeiro',
-    component: () => import('@/views/PlaceholderView.vue'),
+    component: () => import('@/views/FinanceiroView.vue'),
     meta: { requiresAuth: true },
   },
   {
