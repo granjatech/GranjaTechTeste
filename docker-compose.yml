@@ -25,24 +25,24 @@ services:
       retries: 5
 
   # ===================================
-  # Backend API (.NET 8)
+  # Backend API (Rust / Actix-web)
   # ===================================
   backend:
     build:
-      context: .
+      context: ./granjatech-api
       dockerfile: Dockerfile
     container_name: granjatech-backend
     restart: unless-stopped
     ports:
-      - "5099:8080"
+      - "8080:8080"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=GranjaTechDb;Username=postgres;Password=postgres123
-      - Jwt__Key=74b9f1d2-a3e9-4f7c-a9d8-9e2c1a3b5d7e-granjatech-super-secret
-      - Jwt__Issuer=GranjaTechAPI
-      - Jwt__Audience=GranjaTechApp
-      - AllowedOrigins=http://localhost:3000;http://localhost:80;http://frontend:80
-      - Swagger__Enabled=true
+      - DATABASE_URL=postgres://postgres:postgres123@postgres:5432/GranjaTechDb
+      - JWT_KEY=74b9f1d2-a3e9-4f7c-a9d8-9e2c1a3b5d7e-granjatech-super-secret
+      - JWT_ISSUER=GranjaTechAPI
+      - JWT_AUDIENCE=GranjaTechApp
+      - ALLOWED_ORIGINS=http://localhost:80;http://localhost:3000
+      - SWAGGER_ENABLED=true
+      - RUST_LOG=info
     depends_on:
       postgres:
         condition: service_healthy
@@ -53,21 +53,19 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 60s
 
   # ===================================
-  # Frontend (React + Nginx)
+  # Frontend (Vue 3 + Nginx + Reverse Proxy)
   # ===================================
   frontend:
     build:
-      context: ./frontend
+      context: ./granjatech-frontend
       dockerfile: Dockerfile
     container_name: granjatech-frontend
     restart: unless-stopped
     ports:
-      - "3000:80"
-    environment:
-      - REACT_APP_API_URL=http://localhost:5099/api
+      - "80:80"
     depends_on:
       - backend
     networks:
