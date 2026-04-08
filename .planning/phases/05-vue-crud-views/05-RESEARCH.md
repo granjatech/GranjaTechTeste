@@ -703,7 +703,7 @@ All endpoints are on the Rust backend at `http://localhost:5099/api`. All use ca
 | A1 | vue-chartjs v5 reactivity works by replacing the data object reference | Pitfall 4 | Charts may not update; would need explicit `ref` key change |
 | A2 | xlsx 0.18.5 works with ES module imports in Vite | Standard Stack | May need `import * as XLSX` syntax or Vite config |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Exact column definitions per view**
    - What we know: React pages define column structure in JSX
