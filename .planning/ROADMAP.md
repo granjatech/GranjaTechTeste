@@ -102,10 +102,10 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 05-01-PLAN.md -- DashboardView + ProfileView + AuditoriaView + UsuariosView (install vue-chartjs + chart.js)
-- [ ] 05-02-PLAN.md -- GranjasView + LotesView + EstoqueView + FinanceiroView (standard CRUD)
-- [ ] 05-03-PLAN.md -- ConsumoView + PesagemView + SensoresView + SanitarioView (data + charts)
-- [ ] 05-04-PLAN.md -- AviculturaView + RelatoriosView + useExport composable (complex views)
+- [x] 05-01-PLAN.md -- DashboardView + ProfileView + AuditoriaView + UsuariosView (install vue-chartjs + chart.js)
+- [x] 05-02-PLAN.md -- GranjasView + LotesView + EstoqueView + FinanceiroView (standard CRUD)
+- [x] 05-03-PLAN.md -- ConsumoView + PesagemView + SensoresView + SanitarioView (data + charts)
+- [x] 05-04-PLAN.md -- AviculturaView + RelatoriosView + useExport composable (complex views)
 
 ### Phase 6: Docker & Finalization
 **Goal**: The entire stack (PostgreSQL + Rust backend + Vue frontend) runs via a single docker-compose command
