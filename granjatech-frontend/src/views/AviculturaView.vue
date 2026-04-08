@@ -119,8 +119,7 @@ onMounted(async () => {
   }
 })
 
-watch(selectedLoteId, async (loteId) => {
-  if (!loteId) return
+async function fetchDashboardData(loteId: number) {
   selectedLote.value = lotes.value.find(l => l.id === loteId) || null
   try {
     loadingDetalhes.value = true
@@ -142,6 +141,11 @@ watch(selectedLoteId, async (loteId) => {
   } finally {
     loadingDetalhes.value = false
   }
+}
+
+watch(selectedLoteId, async (loteId) => {
+  if (!loteId) return
+  await fetchDashboardData(loteId)
 })
 
 function getSeverityColor(severidade: string): string {
@@ -330,7 +334,7 @@ const metricaCards = [
           icon="mdi-refresh"
           variant="text"
           :loading="loadingDetalhes"
-          @click="selectedLoteId && (selectedLoteId = selectedLoteId)"
+          @click="selectedLoteId && fetchDashboardData(selectedLoteId)"
         />
       </div>
     </template>
