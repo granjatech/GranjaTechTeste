@@ -33,7 +33,7 @@ const passwordMessage = ref<{ type: 'success' | 'error'; text: string } | null>(
 const requiredRule = [(v: string) => !!v || 'Campo obrigatorio']
 const emailRules = [
   (v: string) => !!v || 'Email obrigatorio',
-  (v: string) => /.+@.+\..+/.test(v) || 'Email invalido',
+  (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) || 'Email invalido',
 ]
 
 async function fetchProfile() {

@@ -55,7 +55,7 @@ const perfilOptions = [
 const requiredRule = [(v: string) => !!v || 'Campo obrigatorio']
 const emailRules = [
   (v: string) => !!v || 'Email obrigatorio',
-  (v: string) => /.+@.+\..+/.test(v) || 'Email invalido',
+  (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) || 'Email invalido',
 ]
 const perfilRule = [(v: number | null) => !!v || 'Perfil obrigatorio']
 const senhaCreateRule = [
