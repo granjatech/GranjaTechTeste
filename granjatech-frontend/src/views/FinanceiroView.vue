@@ -150,7 +150,7 @@ async function handleSubmit() {
       showSnackbar('Transacao criada com sucesso!')
     }
     dialogOpen.value = false
-    fetchData()
+    await fetchData()
   } catch (err: any) {
     showSnackbar(
       err.response?.data?.message || 'Erro ao salvar transacao.',

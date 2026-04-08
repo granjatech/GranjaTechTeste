@@ -118,7 +118,7 @@ async function handleSubmit() {
       showSnackbar('Granja criada com sucesso!')
     }
     dialogOpen.value = false
-    fetchData()
+    await fetchData()
   } catch (err: any) {
     showSnackbar(
       err.response?.data?.message || 'Erro ao salvar granja.',

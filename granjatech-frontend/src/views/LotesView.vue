@@ -217,7 +217,7 @@ async function handleSubmit() {
       showSnackbar('Lote criado com sucesso!')
     }
     dialogOpen.value = false
-    fetchData()
+    await fetchData()
   } catch (err: any) {
     showSnackbar(
       err.response?.data?.message || 'Erro ao salvar lote.',
