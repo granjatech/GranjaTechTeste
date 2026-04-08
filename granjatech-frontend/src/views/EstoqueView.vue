@@ -3,6 +3,9 @@ import { ref, onMounted } from 'vue'
 import api from '@/services/api'
 import PageContainer from '@/components/PageContainer.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import { useFormatters } from '@/composables/useFormatters'
+
+const { formatCurrency } = useFormatters()
 
 interface Produto {
   id: number
@@ -63,10 +66,6 @@ const minZeroRule = [
 
 function showSnackbar(text: string, color: string = 'success') {
   snackbar.value = { show: true, text, color }
-}
-
-function formatCurrency(value: number): string {
-  return `R$ ${value.toFixed(2)}`
 }
 
 function isLowStock(item: Produto): boolean {
@@ -171,7 +170,6 @@ async function fetchData() {
     const response = await api.get('/estoque')
     items.value = response.data
   } catch (err) {
-    console.error('Erro ao buscar estoque:', err)
     showSnackbar('Erro ao carregar lista de estoque.', 'error')
   } finally {
     loading.value = false

@@ -14,6 +14,9 @@ import {
 } from 'chart.js'
 import api from '@/services/api'
 import PageContainer from '@/components/PageContainer.vue'
+import { useFormatters } from '@/composables/useFormatters'
+
+const { formatDate } = useFormatters()
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler)
 
@@ -77,7 +80,6 @@ async function fetchLotes() {
       selectedLoteId.value = lotesAtivos[0].id
     }
   } catch (err) {
-    console.error('Erro ao buscar lotes:', err)
     error.value = 'Erro ao carregar lotes ativos'
   } finally {
     loading.value = false
@@ -96,7 +98,6 @@ async function fetchPesagemData(loteId: number) {
     pesagens.value = pesagensRes.data || []
     resumo.value = resumoRes.data
   } catch (err) {
-    console.error('Erro ao buscar pesagens:', err)
     error.value = 'Erro ao carregar pesagens'
   } finally {
     loadingData.value = false
@@ -131,7 +132,6 @@ async function submitPesagem() {
     }
     await fetchPesagemData(selectedLoteId.value)
   } catch (err) {
-    console.error('Erro ao registrar pesagem:', err)
     error.value = 'Erro ao registrar pesagem'
   } finally {
     submitting.value = false
@@ -144,14 +144,6 @@ const tableHeaders = [
   { title: 'Qtd Amostras', key: 'quantidadeAmostras' },
   { title: 'Observacoes', key: 'observacoes' },
 ]
-
-function formatDate(dateStr: string): string {
-  try {
-    return new Date(dateStr).toLocaleDateString('pt-BR')
-  } catch {
-    return dateStr
-  }
-}
 
 const chartData = computed(() => {
   const sorted = [...pesagens.value].sort(

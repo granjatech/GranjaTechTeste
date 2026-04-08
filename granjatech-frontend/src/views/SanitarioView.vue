@@ -2,6 +2,9 @@
 import { ref, watch, onMounted } from 'vue'
 import api from '@/services/api'
 import PageContainer from '@/components/PageContainer.vue'
+import { useFormatters } from '@/composables/useFormatters'
+
+const { formatDate } = useFormatters()
 
 interface Lote {
   id: number
@@ -83,14 +86,6 @@ function getTipoColor(tipo: string): string {
   }
 }
 
-function formatDate(dateStr: string): string {
-  try {
-    return new Date(dateStr).toLocaleDateString('pt-BR')
-  } catch {
-    return dateStr
-  }
-}
-
 async function fetchLotes() {
   try {
     loading.value = true
@@ -101,7 +96,6 @@ async function fetchLotes() {
       selectedLoteId.value = lotesAtivos[0].id
     }
   } catch (err) {
-    console.error('Erro ao buscar lotes:', err)
     error.value = 'Erro ao carregar lotes ativos'
   } finally {
     loading.value = false
@@ -120,7 +114,6 @@ async function fetchSanitarioData(loteId: number) {
     eventos.value = eventosRes.data || []
     resumo.value = resumoRes.data
   } catch (err) {
-    console.error('Erro ao buscar eventos sanitarios:', err)
     error.value = 'Erro ao carregar eventos sanitarios'
   } finally {
     loadingData.value = false
@@ -131,8 +124,8 @@ async function fetchCronograma() {
   try {
     const res = await api.get('/sanitario/cronograma-vacinacao')
     cronograma.value = res.data || []
-  } catch (err) {
-    console.error('Erro ao buscar cronograma de vacinacao:', err)
+  } catch {
+    // Cronograma is supplementary; silently ignore fetch errors
   }
 }
 
@@ -167,7 +160,6 @@ async function submitEvento() {
     }
     await fetchSanitarioData(selectedLoteId.value)
   } catch (err) {
-    console.error('Erro ao registrar evento sanitario:', err)
     error.value = 'Erro ao registrar evento sanitario'
   } finally {
     submitting.value = false

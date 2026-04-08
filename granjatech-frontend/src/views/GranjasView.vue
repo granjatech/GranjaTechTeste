@@ -152,7 +152,6 @@ async function fetchData() {
     const response = await api.get('/granjas')
     items.value = response.data
   } catch (err) {
-    console.error('Erro ao buscar granjas:', err)
     showSnackbar('Erro ao carregar lista de granjas.', 'error')
   } finally {
     loading.value = false

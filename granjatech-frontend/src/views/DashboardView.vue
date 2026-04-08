@@ -12,6 +12,9 @@ import {
 import { Bar } from 'vue-chartjs'
 import api from '@/services/api'
 import PageContainer from '@/components/PageContainer.vue'
+import { useFormatters } from '@/composables/useFormatters'
+
+const { formatCurrency } = useFormatters()
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
@@ -92,13 +95,6 @@ const chartOptions = {
   },
 }
 
-function formatCurrency(value: number | undefined): string {
-  return (
-    value?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) ??
-    'R$ 0,00'
-  )
-}
-
 async function fetchData() {
   try {
     loading.value = true
@@ -110,7 +106,6 @@ async function fetchData() {
     kpis.value = kpisRes.data
     monthlyData.value = monthlyRes.data
   } catch (err) {
-    console.error('Erro ao buscar dados do dashboard:', err)
     error.value = 'Erro ao carregar dados do dashboard.'
   } finally {
     loading.value = false

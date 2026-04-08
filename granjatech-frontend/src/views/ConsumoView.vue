@@ -14,6 +14,9 @@ import {
 } from 'chart.js'
 import api from '@/services/api'
 import PageContainer from '@/components/PageContainer.vue'
+import { useFormatters } from '@/composables/useFormatters'
+
+const { formatDate } = useFormatters()
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler)
 
@@ -85,7 +88,6 @@ async function fetchLotes() {
       selectedLoteId.value = lotesAtivos[0].id
     }
   } catch (err) {
-    console.error('Erro ao buscar lotes:', err)
     error.value = 'Erro ao carregar lotes ativos'
   } finally {
     loading.value = false
@@ -106,7 +108,6 @@ async function fetchConsumoData(loteId: number) {
     consumosAgua.value = aguaRes.data || []
     resumo.value = resumoRes.data
   } catch (err) {
-    console.error('Erro ao buscar dados de consumo:', err)
     error.value = 'Erro ao carregar dados de consumo'
   } finally {
     loadingData.value = false
@@ -135,7 +136,6 @@ async function submitRacao() {
     formRacao.value = { data: new Date().toISOString().split('T')[0], quantidade: null, observacoes: '' }
     await fetchConsumoData(selectedLoteId.value)
   } catch (err) {
-    console.error('Erro ao registrar consumo de racao:', err)
     error.value = 'Erro ao registrar consumo de racao'
   } finally {
     submitting.value = false
@@ -156,7 +156,6 @@ async function submitAgua() {
     formAgua.value = { data: new Date().toISOString().split('T')[0], quantidade: null, observacoes: '' }
     await fetchConsumoData(selectedLoteId.value)
   } catch (err) {
-    console.error('Erro ao registrar consumo de agua:', err)
     error.value = 'Erro ao registrar consumo de agua'
   } finally {
     submitting.value = false
@@ -175,14 +174,6 @@ const aguaHeaders = [
   { title: 'Quantidade (L)', key: 'quantidade' },
   { title: 'Observacoes', key: 'observacoes' },
 ]
-
-function formatDate(dateStr: string): string {
-  try {
-    return new Date(dateStr).toLocaleDateString('pt-BR')
-  } catch {
-    return dateStr
-  }
-}
 
 // Chart data
 const racaoChartData = computed(() => {

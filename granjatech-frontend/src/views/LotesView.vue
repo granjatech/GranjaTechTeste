@@ -3,6 +3,9 @@ import { ref, onMounted } from 'vue'
 import api from '@/services/api'
 import PageContainer from '@/components/PageContainer.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import { useFormatters } from '@/composables/useFormatters'
+
+const { formatDate } = useFormatters()
 
 interface Granja {
   id: number
@@ -99,11 +102,6 @@ function showSnackbar(text: string, color: string = 'success') {
   snackbar.value = { show: true, text, color }
 }
 
-function formatDate(dateStr: string): string {
-  if (!dateStr) return '-'
-  return new Date(dateStr).toLocaleDateString('pt-BR')
-}
-
 function formatViabilidade(value: number | null): string {
   if (value === null || value === undefined) return '-'
   return `${value.toFixed(1)}%`
@@ -159,7 +157,6 @@ async function fetchMortalidades(loteId: number) {
     const response = await api.get(`/lotes/${loteId}/mortalidades`)
     mortalidades.value = response.data
   } catch (err) {
-    console.error('Erro ao buscar mortalidades:', err)
     showSnackbar('Erro ao carregar mortalidades.', 'error')
   } finally {
     mortalidadeLoading.value = false
@@ -255,7 +252,6 @@ async function fetchData() {
     items.value = lotesRes.data
     granjas.value = granjasRes.data
   } catch (err) {
-    console.error('Erro ao buscar lotes:', err)
     showSnackbar('Erro ao carregar lista de lotes.', 'error')
   } finally {
     loading.value = false

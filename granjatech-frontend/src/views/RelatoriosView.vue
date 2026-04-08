@@ -3,6 +3,9 @@ import { ref, onMounted, computed } from 'vue'
 import api from '@/services/api'
 import PageContainer from '@/components/PageContainer.vue'
 import { useExport } from '@/composables/useExport'
+import { useFormatters } from '@/composables/useFormatters'
+
+const { formatDate, formatCurrency } = useFormatters()
 import type { ExportColumn } from '@/composables/useExport'
 
 const { exportToPdf, exportToExcel } = useExport()
@@ -163,15 +166,6 @@ const needsTipo = computed(() => activeTab.value === 5)
 function n(v: any): number {
   const x = Number(v)
   return Number.isFinite(x) ? x : 0
-}
-
-function formatCurrency(v: any): string {
-  return n(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-}
-
-function formatDate(d: string): string {
-  if (!d) return '-'
-  return new Date(d).toLocaleDateString('pt-BR')
 }
 
 // Export columns per report type

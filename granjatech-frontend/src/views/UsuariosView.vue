@@ -164,7 +164,6 @@ async function fetchUsers() {
     const response = await api.get('/auth/usuarios')
     users.value = response.data
   } catch (err) {
-    console.error('Erro ao buscar usuarios:', err)
     showSnackbar('Erro ao carregar lista de usuarios.', 'error')
   } finally {
     loading.value = false

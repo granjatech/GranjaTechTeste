@@ -14,6 +14,9 @@ import {
 } from 'chart.js'
 import api from '@/services/api'
 import PageContainer from '@/components/PageContainer.vue'
+import { useFormatters } from '@/composables/useFormatters'
+
+const { formatDateTime } = useFormatters()
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler)
 
@@ -100,7 +103,6 @@ async function fetchData() {
     sensores.value = sensoresRes.data || []
     granjas.value = granjasRes.data || []
   } catch (err) {
-    console.error('Erro ao buscar sensores:', err)
     error.value = 'Erro ao carregar sensores'
   } finally {
     loading.value = false
@@ -115,7 +117,6 @@ async function fetchLeituras(sensorId: number) {
       (a: Leitura, b: Leitura) => new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime()
     )
   } catch (err) {
-    console.error('Erro ao buscar leituras:', err)
     error.value = 'Erro ao carregar leituras'
     leituras.value = []
   } finally {
@@ -143,7 +144,6 @@ async function createSensor() {
     formCreate.value = { nome: '', tipo: 'Temperatura', localizacao: '', granjaId: null }
     await fetchData()
   } catch (err) {
-    console.error('Erro ao criar sensor:', err)
     error.value = 'Erro ao criar sensor'
   } finally {
     submittingCreate.value = false
@@ -159,7 +159,6 @@ async function deleteSensor(id: number) {
     }
     await fetchData()
   } catch (err) {
-    console.error('Erro ao excluir sensor:', err)
     error.value = 'Erro ao excluir sensor'
   }
 }
@@ -176,18 +175,9 @@ async function submitLeitura() {
     formLeitura.value = { valor: null }
     await fetchLeituras(selectedSensor.value.id)
   } catch (err) {
-    console.error('Erro ao registrar leitura:', err)
     error.value = 'Erro ao registrar leitura'
   } finally {
     submittingLeitura.value = false
-  }
-}
-
-function formatDateTime(dateStr: string): string {
-  try {
-    return new Date(dateStr).toLocaleString('pt-BR')
-  } catch {
-    return dateStr
   }
 }
 

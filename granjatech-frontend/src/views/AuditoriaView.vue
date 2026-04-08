@@ -2,6 +2,9 @@
 import { ref, onMounted } from 'vue'
 import api from '@/services/api'
 import PageContainer from '@/components/PageContainer.vue'
+import { useFormatters } from '@/composables/useFormatters'
+
+const { formatDateTime } = useFormatters()
 
 interface AuditLog {
   id: number
@@ -33,18 +36,13 @@ function getActionColor(action: string): string {
   return 'default'
 }
 
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleString('pt-BR')
-}
-
 async function fetchLogs() {
   try {
     loading.value = true
     error.value = ''
     const response = await api.get('/auditoria')
     logs.value = response.data
-  } catch (err) {
-    console.error('Erro ao buscar logs de auditoria:', err)
+  } catch {
     error.value = 'Erro ao carregar logs de auditoria. Tente novamente.'
   } finally {
     loading.value = false
@@ -112,7 +110,7 @@ onMounted(() => {
         </template>
 
         <template #item.dataHora="{ item }">
-          {{ formatDate(item.dataHora) }}
+          {{ formatDateTime(item.dataHora) }}
         </template>
       </v-data-table>
     </v-card>

@@ -44,7 +44,6 @@ async function fetchProfile() {
     nome.value = response.data.nome
     email.value = response.data.email
   } catch (err) {
-    console.error('Erro ao buscar perfil:', err)
     profileMessage.value = { type: 'error', text: 'Erro ao carregar dados do perfil.' }
   } finally {
     loading.value = false

@@ -3,6 +3,9 @@ import { ref, computed, onMounted } from 'vue'
 import api from '@/services/api'
 import PageContainer from '@/components/PageContainer.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import { useFormatters } from '@/composables/useFormatters'
+
+const { formatDate, formatCurrency } = useFormatters()
 
 interface Granja {
   id: number
@@ -81,15 +84,6 @@ const valorRules = [
 
 function showSnackbar(text: string, color: string = 'success') {
   snackbar.value = { show: true, text, color }
-}
-
-function formatCurrency(value: number): string {
-  return `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
-}
-
-function formatDate(dateStr: string): string {
-  if (!dateStr) return '-'
-  return new Date(dateStr).toLocaleDateString('pt-BR')
 }
 
 function openCreate() {
@@ -188,7 +182,6 @@ async function fetchData() {
     items.value = transacoesRes.data
     granjas.value = granjasRes.data
   } catch (err) {
-    console.error('Erro ao buscar financas:', err)
     showSnackbar('Erro ao carregar dados financeiros.', 'error')
   } finally {
     loading.value = false
