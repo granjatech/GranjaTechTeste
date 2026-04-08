@@ -43,8 +43,8 @@ Migração para novo stack mantendo paridade:
 - [ ] JWT compatível (mesma estrutura de claims: id, email, role)
 - [ ] BCrypt hash compatível com senhas existentes no PostgreSQL
 - [ ] Mesmo banco PostgreSQL 16 — sem migração de schema
-- [ ] Swagger/OpenAPI via utoipa
-- [ ] Docker Compose atualizado (Rust + Vue no lugar de .NET + React)
+- [x] Swagger/OpenAPI via utoipa — Validated in Phase 6: docker-finalization (accessible via nginx proxy)
+- [x] Docker Compose atualizado (Rust + Vue no lugar de .NET + React) — Validated in Phase 6: docker-finalization
 - [ ] Cache in-memory via moka (substituindo MemoryCache)
 - [x] Gráficos via vue-chartjs (substituindo Recharts) — Validated in Phase 5: vue-crud-views
 - [x] Pinia stores (substituindo React Context) — Validated in Phase 4+5
