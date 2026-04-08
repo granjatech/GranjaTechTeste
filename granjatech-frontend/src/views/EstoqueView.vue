@@ -113,6 +113,7 @@ function closeDialog() {
 }
 
 async function handleSubmit() {
+  if (!formRef.value) return
   const { valid } = await formRef.value.validate()
   if (!valid) return
 
