@@ -121,7 +121,7 @@ async function gerarRelatorio() {
 
   loading.value = true
   try {
-    let response: any
+    let response: { data: unknown } | undefined
     switch (activeTab.value) {
       case 0:
         response = await api.get('/relatorios/financeiro-simplificado', { params: { granjaId: granjaId.value } })
@@ -146,8 +146,9 @@ async function gerarRelatorio() {
     if (!reportData.value) {
       error.value = 'Nenhum dado encontrado'
     }
-  } catch (e: any) {
-    error.value = `Erro ao gerar relatorio: ${e.response?.data?.message || e.message}`
+  } catch (e: unknown) {
+    const axiosErr = e as { response?: { data?: { message?: string } }; message?: string }
+    error.value = `Erro ao gerar relatorio: ${axiosErr.response?.data?.message || axiosErr.message}`
   } finally {
     loading.value = false
   }
@@ -163,7 +164,7 @@ const needsDates = computed(() => [1, 5].includes(activeTab.value))
 const needsTipo = computed(() => activeTab.value === 5)
 
 // Safe number formatting
-function n(v: any): number {
+function n(v: unknown): number {
   const x = Number(v)
   return Number.isFinite(x) ? x : 0
 }

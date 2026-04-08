@@ -62,7 +62,9 @@ interface CurvaPonto {
 
 interface ComparacaoMetrica {
   nome: string
+  metrica?: string
   valorAtual: number
+  valor?: number
   valorPadraoIndustria: number
   status: string
   unidade: string
@@ -73,10 +75,10 @@ interface ComparacaoIndustria {
   industria: ComparacaoMetrica[]
   pontuacaoGeral?: number
   classificacaoGeral?: string
-  conversaoAlimentar?: any
-  ganhoMedioDiario?: any
-  viabilidade?: any
-  iep?: any
+  conversaoAlimentar?: ComparacaoMetrica
+  ganhoMedioDiario?: ComparacaoMetrica
+  viabilidade?: ComparacaoMetrica
+  iep?: ComparacaoMetrica
 }
 
 interface ProjecaoAbate {
@@ -115,7 +117,7 @@ onMounted(async () => {
       selectedLoteId.value = ativos[0].id
       selectedLote.value = ativos[0]
     }
-  } catch (e: any) {
+  } catch {
     error.value = 'Erro ao carregar lotes ativos'
   } finally {
     loading.value = false
@@ -139,7 +141,7 @@ async function fetchDashboardData(loteId: number) {
     curvas.value = (curvasRes.data as CurvaPonto[]) || []
     comparacao.value = comparacaoRes.data as ComparacaoIndustria
     projecao.value = projecaoRes.data as ProjecaoAbate
-  } catch (e: any) {
+  } catch {
     error.value = 'Erro ao carregar dados do lote'
   } finally {
     loadingDetalhes.value = false
@@ -238,11 +240,11 @@ function getComparacaoChartData() {
   // If metricas/industria arrays exist, use them
   if (metricas.length > 0) {
     return {
-      labels: metricas.map((m: any) => m.nome || m.metrica),
+      labels: metricas.map((m: ComparacaoMetrica) => m.nome || m.metrica),
       datasets: [
         {
           label: 'Lote',
-          data: metricas.map((m: any) => m.valorAtual ?? m.valor),
+          data: metricas.map((m: ComparacaoMetrica) => m.valorAtual ?? m.valor),
           backgroundColor: 'rgba(46, 125, 50, 0.7)',
           borderColor: '#2E7D32',
           borderWidth: 1,
@@ -250,8 +252,8 @@ function getComparacaoChartData() {
         {
           label: 'Industria',
           data: industria.length > 0
-            ? industria.map((m: any) => m.valorPadraoIndustria ?? m.valor)
-            : metricas.map((m: any) => m.valorPadraoIndustria ?? 0),
+            ? industria.map((m: ComparacaoMetrica) => m.valorPadraoIndustria ?? m.valor)
+            : metricas.map((m: ComparacaoMetrica) => m.valorPadraoIndustria ?? 0),
           backgroundColor: 'rgba(158, 158, 158, 0.7)',
           borderColor: '#9e9e9e',
           borderWidth: 1,
@@ -265,18 +267,18 @@ function getComparacaoChartData() {
   if (comp?.conversaoAlimentar) {
     const items = [comp.conversaoAlimentar, comp.ganhoMedioDiario, comp.viabilidade, comp.iep].filter(Boolean)
     return {
-      labels: items.map((m: any) => m.nome),
+      labels: items.map((m: ComparacaoMetrica) => m.nome),
       datasets: [
         {
           label: 'Lote',
-          data: items.map((m: any) => m.valorAtual),
+          data: items.map((m: ComparacaoMetrica) => m.valorAtual),
           backgroundColor: 'rgba(46, 125, 50, 0.7)',
           borderColor: '#2E7D32',
           borderWidth: 1,
         },
         {
           label: 'Industria',
-          data: items.map((m: any) => m.valorPadraoIndustria),
+          data: items.map((m: ComparacaoMetrica) => m.valorPadraoIndustria),
           backgroundColor: 'rgba(158, 158, 158, 0.7)',
           borderColor: '#9e9e9e',
           borderWidth: 1,

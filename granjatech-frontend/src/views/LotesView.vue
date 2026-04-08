@@ -198,7 +198,7 @@ async function handleSubmit() {
 
   saving.value = true
   try {
-    const payload: any = {
+    const payload: Record<string, string | number | null> = {
       granjaId: formGranjaId.value,
       dataAlojamento: formDataAlojamento.value,
       quantidadeInicial: formQuantidadeInicial.value,
@@ -216,9 +216,10 @@ async function handleSubmit() {
     }
     dialogOpen.value = false
     await fetchData()
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const axiosErr = err as { response?: { data?: { message?: string } } }
     showSnackbar(
-      err.response?.data?.message || 'Erro ao salvar lote.',
+      axiosErr.response?.data?.message || 'Erro ao salvar lote.',
       'error'
     )
   } finally {
